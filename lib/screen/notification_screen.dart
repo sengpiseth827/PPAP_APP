@@ -9,24 +9,38 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              color: Colors.white
-          ),
-        ),
-        title: Center(
-          child: Text(
-            'Notification',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18.0,
-              letterSpacing: 1.0,
-            ),
-          ),
-        ),
-        elevation: 0.0,
+          backgroundColor: Colors.white,
+          title: Row(
+            children: <Widget>[
+              Container(
+                  width: 40,
+                  child: Image.asset("assets/images/logo.jpg")
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 50),
+                child: Column(
+                  children: <Widget>[
+                    new Text(
+                      'កំពង់ផែស្វយ័តភ្នំពេញ',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 13
+                      ),
+                    ),
+                    new Text(
+                      'Phnom Penh Autonomous Port',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 13
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          )
       ),
       body: Center(
         child: Column(
@@ -35,7 +49,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             Container(
               height: 100,
               child: Image.asset(
-                "assets/images/notification.jpg",
+                "assets/images/notitfication.jpg",
                 width: 100,
                 fit: BoxFit.cover,
               ),
