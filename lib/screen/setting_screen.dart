@@ -1,6 +1,13 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:ppapapp/widget/contact_screen.dart';
+import 'package:ppapapp/components/ChangeAddressDialog.dart';
+import 'package:ppapapp/components/ChangePasswordDialog.dart';
+import 'package:ppapapp/components/ChangeProfileDialog.dart';
+import 'package:ppapapp/service/api_service.dart';
+import 'package:ppapapp/widget/login_screen.dart';
 import 'package:ppapapp/widget/profile_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingScreen extends StatefulWidget {
   @override
@@ -8,6 +15,37 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+
+  SharedPreferences mySPrefs;
+  String otherProfilePic = "https://goodstransporter.com/wp-content/uploads/2019/11/Phnom-Penh-Autonomous-Port-PPAP.jpg";
+  SharedPreferences sharedPreferences;
+  String username= "" ,phone = "";
+
+  @override
+  void initState() {
+    super.initState();
+    getUserInfo();
+  }
+  getUserInfo() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("token") != null) {
+      String userId = sharedPreferences.getString("token");
+      final api = Provider.of<ApiService>(context, listen: false);
+      api.getUser().then((it)  {
+        it.forEach((f) async {
+          if(f.sysId == userId){
+            setState(() {
+              username = f.userName;
+              phone = f.tel;
+            });
+          }
+        });
+      }).catchError((onError){
+        print(onError.toString());
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,47 +88,144 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
           ],
       ),
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 25.0),
             child: Column(
               children: <Widget>[
-                Center(
-                  child: Column(
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      new ListTile(
-                          title: new Text("Profile"),
-                          trailing: new Icon(Icons.arrow_forward_ios,color: Colors.black,size: 18,),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                  Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new ProfileScreen()));
-                          }
+                      Text(
+                        username,
+                        style: TextStyle(
+                          color: Colors.redAccent,
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.0,
+                        ),
                       ),
-                      new ListTile(
-                          title: new Text("Setting"),
-                          trailing: new Icon(Icons.arrow_forward_ios,color: Colors.black,size: 18,),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                  Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new ProfileScreen()));
-                          }
-                      ),
-                      new ListTile(
-                          title: new Text("Contact Us"),
-                          trailing: new Icon(Icons.arrow_forward_ios,color: Colors.black,size: 18,),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                  Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new ContactScreen()));
-                          }
+                      Container(
+                        height: 60,
+                        width: 60,
+                        child: new CircleAvatar(
+                          backgroundImage: new NetworkImage(otherProfilePic),
+                        ),
                       ),
                     ],
                   ),
                 ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "(+855) "+phone,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                    margin: EdgeInsets.only(top: 50.0),
+                    height: MediaQuery.of(context).size.height,
+                    child: Column(
+                      children: <Widget>[
+                        new ListTile(
+                          title: Text("Change Password",style: TextStyle(fontSize: 16,color: Colors.black),),
+                          trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,size: 20,),
+                          onTap: (){
+                            showDialog(
+                              context: context,
+                              builder: (_) => ChangePasswordDialog(),
+                            );
+                          },
+                        ),
+                        SizedBox(height: 0.5,child: Padding(
+                          padding: EdgeInsets.only(left: 10,right: 10),
+                          child: Container(color: Colors.black12,),
+                        ),),
+                        new ListTile(
+                          title: Text("Change Address",style: TextStyle(fontSize: 16,color: Colors.black),),
+                          trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,size: 20,),
+                          onTap: (){
+                            showDialog(
+                              context: context,
+                              builder: (_) => ChangeAddressDialog(),
+                            );
+                          },
+                        ),
+                        SizedBox(height: 0.5,child: Padding(
+                          padding: EdgeInsets.only(left: 10,right: 10),
+                          child: Container(color: Colors.black12,),
+                        ),),
+                        new ListTile(
+                          title: Text("Change Profile",style: TextStyle(fontSize: 16,color: Colors.black),),
+                          trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,size: 20,),
+                          onTap: (){
+                            showDialog(
+                              context: context,
+                              builder: (_) => ChangeProfileDialog(),
+                            );
+                          },
+                        ),
+                        SizedBox(height: 0.5,child: Padding(
+                          padding: EdgeInsets.only(left: 10,right: 10),
+                          child: Container(color: Colors.black12,),
+                        ),),
+                        new ListTile(
+                          title: Text("Log Out",style: TextStyle(fontSize: 16,color: Colors.black),),
+                          onTap: () async{
+                            AwesomeDialog(
+                              context: context,
+                              animType: AnimType.SCALE,
+                              dialogType: DialogType.INFO,
+                              body: Center(child: Text(
+                                'Are you sure want to logout?',
+                                style: TextStyle(fontStyle: FontStyle.italic),
+                              ),),
+                              tittle: 'This is Ignored',
+                              desc:   'This is also Ignored',
+                              btnCancelOnPress: (){},
+                              btnOkOnPress: () async{
+                                SharedPreferences mySPrefs = await SharedPreferences.getInstance();
+                                mySPrefs.remove("token");
+                                mySPrefs.clear();
+                                _navigateToLogin();
+                              },
+                            ).show();
+                          },
+                        ),
+                        SizedBox(height: 0.5,child: Padding(
+                          padding: EdgeInsets.only(left: 10,right: 10),
+                          child: Container(color: Colors.black12,),
+                        ),),
+                      ],
+                    )
+                ),
               ],
             ),
           ),
-        ),
-      )
+        )
+    );
+  }
+  void _navigateToLogin(){
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+            builder: (BuildContext context) => LoginScreen()
+        )
     );
   }
 }

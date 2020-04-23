@@ -1,17 +1,25 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:ppapapp/components/customDialog.dart';
+import 'package:ppapapp/model/PdfViewPage.dart';
+import 'package:ppapapp/service/api_service.dart';
 import 'package:ppapapp/widget/anouncement_screen.dart';
 import 'package:ppapapp/widget/contact_screen.dart';
 import 'package:ppapapp/widget/greeting_ceo_screen.dart';
 import 'package:ppapapp/widget/invoice_screen.dart';
 import 'package:ppapapp/widget/our_service_screen.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class GridDashboard extends StatelessWidget {
+  String urlPDFPath = "";
   Items item1 = new Items(
       title: "QR Invoice",
       subtitle: "March, Wednesday",
@@ -48,8 +56,35 @@ class GridDashboard extends StatelessWidget {
     img: "assets/images/tel.jpg",
   );
   String result = "Hey there !";
+  ProgressDialog pr;
 
-  Future _scanQR() async {
+  Future<File> getFileFromUrl(String url) async {
+    try {
+      var data = await http.get(url);
+      var bytes = data.bodyBytes;
+      var dir = await getApplicationDocumentsDirectory();
+      File file = File("${dir.path}/mypdfonline.pdf");
+
+      File urlFile = await file.writeAsBytes(bytes);
+      return urlFile;
+    } catch (e) {
+      throw Exception("Error opening url file");
+    }
+  }
+
+  Future _scanQR(BuildContext context) async {
+    pr = new ProgressDialog(context);
+    pr.update(
+      progress: 40.0,
+      message: "Loading...",
+      progressWidget: Container(
+          padding: EdgeInsets.all(8.0), child: CircularProgressIndicator()),
+      maxProgress: 100.0,
+      progressTextStyle: TextStyle(
+          color: Colors.black, fontSize: 9.0, fontWeight: FontWeight.w400),
+      messageTextStyle: TextStyle(
+          color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w600),
+    );
     try {
       String qrResult = await BarcodeScanner.scan();
       result = qrResult;
@@ -65,6 +100,18 @@ class GridDashboard extends StatelessWidget {
       result = "Unknown Error $ex";
     }
     print("Result : "+result);
+    await pr.show();
+    Provider.of<ApiService>(context, listen: false).postqrcode(result).then((value){
+      print(value);
+      getFileFromUrl(value).then((f) {
+        urlPDFPath = f.path;
+        print(urlPDFPath);
+        if (urlPDFPath != null) {
+          pr.hide();
+          Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(path: urlPDFPath)));
+        }
+      });
+    });
   }
 
   @override
@@ -90,7 +137,7 @@ class GridDashboard extends StatelessWidget {
                   child: new InkWell(
                   onTap: (){
                     if(data.title == "QR Invoice"){
-                      _scanQR();
+                      _scanQR(context);
                     }else if(data.title == "Exchange Rate"){
                       showDialog(
                           context: context,
@@ -108,7 +155,7 @@ class GridDashboard extends StatelessWidget {
                       Navigator.of(context).push(new MaterialPageRoute(
                         builder: (BuildContext context)=>new OurServiceScreen(),
                       ));
-                    }else if(data.title == "Greeting CEO"){
+                    }else if(data.title == "Greeting From CEO"){
                       Navigator.of(context).push(new MaterialPageRoute(
                         builder: (BuildContext context)=>new GreetingCEOScreen(),
                       ));

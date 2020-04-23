@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ppapapp/screen/content_screen.dart';
 import 'package:ppapapp/widget/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:shimmer/shimmer.dart';
 
@@ -11,6 +12,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  SharedPreferences sharedPreferences;
 
   @override
   void initState(){
@@ -27,11 +30,14 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-
   Future<bool> _mockCheckForSession() async {
+    sharedPreferences = await SharedPreferences.getInstance();
     await Future.delayed(Duration(milliseconds: 3000), () {});
-
-    return true;
+    if(sharedPreferences.getString("token") == null) {
+      return false;
+    }else {
+      return true;
+    }
   }
 
   void _navigateToHome(){

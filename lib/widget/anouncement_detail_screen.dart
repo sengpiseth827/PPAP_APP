@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ppapapp/components/loginbutton.dart';
+import 'package:ppapapp/model/anouncement_model.dart';
 import 'package:ppapapp/model/ceo_model.dart';
-import 'package:ppapapp/model/service_model.dart';
 import 'package:ppapapp/model/user_model.dart';
 import 'package:ppapapp/service/api_service.dart';
 import 'package:provider/provider.dart';
@@ -10,12 +10,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login_screen.dart';
 
-class DetailScreen extends StatefulWidget {
+class AnouncementDetail extends StatefulWidget {
   @override
-  _DetailScreenState createState() => _DetailScreenState();
+  _AnouncementDetailState createState() => _AnouncementDetailState();
 }
 
-class _DetailScreenState extends State<DetailScreen> {
+class _AnouncementDetailState extends State<AnouncementDetail> {
   String username,password;
   SharedPreferences sharedPreferences;
   double money = 50.00;
@@ -26,7 +26,7 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   custom() {
-    final ServiceModel data = ModalRoute.of(context).settings.arguments;
+    final AnouncementModel data = ModalRoute.of(context).settings.arguments;
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
@@ -62,7 +62,7 @@ class _DetailScreenState extends State<DetailScreen> {
               ),
             ),
             background: Image.network(
-              "https://opendevelopmentcambodia.net/wp-content/uploads/sites/2/2016/07/Development-Policy-and-Administration.jpg",
+              "https://translation100.com/wp-content/uploads/2019/04/Increase-potential-revenue.png",
               fit: BoxFit.cover,
             ),
           ),

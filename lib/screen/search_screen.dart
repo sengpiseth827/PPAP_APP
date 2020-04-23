@@ -55,76 +55,34 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
       ),
-      body: _listFutureTasks(context),
-//      body: Center(
-//        child: Column(
-//          mainAxisAlignment: MainAxisAlignment.center,
-//          children: <Widget>[
-//            Container(
-//              height: 100,
-//              child: Image.asset(
-//                "assets/images/resultsearch.jpg",
-//                width: 100,
-//                fit: BoxFit.cover,
-//              ),
-//            ),
-//            SizedBox(height: 10,),
-//            Text(
-//              'No Result',
-//              style: TextStyle(
-//                color: Colors.black38,
-//                fontSize: 18.0,
-//                letterSpacing: 1.0,
-//              ),
-//            ),
-//            Padding(
-//              padding: EdgeInsets.only(top: 15,left: 100,right: 100,),
-//            )
-//          ],
-//        ),
-//      ),
-
-    );
-  }
-  FutureBuilder _listFutureTasks(BuildContext context) {
-    return FutureBuilder<List<ProductModel>>(
-//      future: Provider.of<ApiService>(context, listen: false).getProduct(),
-      builder: (BuildContext context, AsyncSnapshot<List<ProductModel>> snapshot) {
-        if(snapshot.connectionState == ConnectionState.done) {
-          if(snapshot.hasError) {
-            return Container(
-              child: Center(
-                child: Text("Something wrong"),
-              ),
-            );
-          }
-          final tasks = snapshot.data;
-          return _listTasks(context: context, tasks: tasks);
-
-        } else {
-          return Container(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  ListView _listTasks({BuildContext context, List<ProductModel> tasks}) {
-    return ListView.builder(
-        itemCount: tasks.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: Container(
-              padding: EdgeInsets.all(10.0),
-              child: ListTile(
-//                leading: Image.network(tasks[index].url),
-                title: Text(tasks[index].userCode),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: 100,
+              child: Image.asset(
+                "assets/images/resultsearch.jpg",
+                width: 100,
+                fit: BoxFit.cover,
               ),
             ),
-          );
-        });
+            SizedBox(height: 10,),
+            Text(
+              'No Result',
+              style: TextStyle(
+                color: Colors.black38,
+                fontSize: 18.0,
+                letterSpacing: 1.0,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 15,left: 100,right: 100,),
+            )
+          ],
+        ),
+      ),
+
+    );
   }
 }

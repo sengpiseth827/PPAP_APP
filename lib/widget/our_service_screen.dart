@@ -62,11 +62,12 @@ class _OurServiceScreenState extends State<OurServiceScreen> {
             child: Container(
               padding: EdgeInsets.all(10.0),
               child: ListTile(
-                leading: Image.network("https://goodstransporter.com/wp-content/uploads/2019/11/Phnom-Penh-Autonomous-Port-PPAP.jpg"),
+                leading: Image.network("https://opendevelopmentcambodia.net/wp-content/uploads/sites/2/2016/07/Development-Policy-and-Administration.jpg"),
                 title: Text(tasks[index].nameTitle),
                 onTap: (){
                   Navigator.of(context).push(new MaterialPageRoute(
                     builder: (BuildContext context)=>new DetailScreen(),
+                      settings: RouteSettings(arguments: tasks[index])
                   ));
                 },
               ),

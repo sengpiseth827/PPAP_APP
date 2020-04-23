@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:ppapapp/screen/content_screen.dart';
 import 'package:ppapapp/service/api_service.dart';
 import 'package:ppapapp/splash_screen.dart';
 import 'package:provider/provider.dart';

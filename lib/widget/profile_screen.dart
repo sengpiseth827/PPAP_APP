@@ -24,48 +24,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           )
       ),
-      body: _listFutureTasks(context),
     );
-  }
-  FutureBuilder _listFutureTasks(BuildContext context) {
-    return FutureBuilder<List<CeoModel>>(
-      future: Provider.of<ApiService>(context, listen: false).getCeo(),
-      builder: (BuildContext context, AsyncSnapshot<List<CeoModel>> snapshot) {
-        if(snapshot.connectionState == ConnectionState.done) {
-          if(snapshot.hasError) {
-            return Container(
-              child: Center(
-                child: Text("Something wrong"),
-              ),
-            );
-          }
-          final tasks = snapshot.data;
-          return _listTasks(context: context, tasks: tasks);
-
-        } else {
-          return Container(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  ListView _listTasks({BuildContext context, List<CeoModel> tasks}) {
-    return ListView.builder(
-        itemCount: tasks.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: Container(
-              padding: EdgeInsets.all(10.0),
-              child: ListTile(
-//                leading: Image.network(tasks[index].url),
-                title: Text(tasks[index].nameTitle),
-              ),
-            ),
-          );
-        });
   }
 }

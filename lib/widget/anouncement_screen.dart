@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ppapapp/model/anouncement_model.dart';
 import 'package:ppapapp/model/user_model.dart';
 import 'package:ppapapp/service/api_service.dart';
+import 'package:ppapapp/widget/anouncement_detail_screen.dart';
 import 'package:provider/provider.dart';
+
+import 'detail_screen.dart';
 
 class AnouncementScreen extends StatefulWidget {
   @override
@@ -35,7 +38,7 @@ class _AnouncementScreenState extends State<AnouncementScreen> {
           if(snapshot.hasError) {
             return Container(
               child: Center(
-                child: Text("Something wrong"),
+                child: Text("No Result"),
               ),
             );
           }
@@ -61,8 +64,14 @@ class _AnouncementScreenState extends State<AnouncementScreen> {
             child: Container(
               padding: EdgeInsets.all(10.0),
               child: ListTile(
-                leading: Image.network(tasks[index].imagePath),
+                leading: Image.network("https://translation100.com/wp-content/uploads/2019/04/Increase-potential-revenue.png"),
                 title: Text(tasks[index].nameTitle),
+                onTap: (){
+                  Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context)=>new AnouncementDetail(),
+                      settings: RouteSettings(arguments: tasks[index])
+                  ));
+                },
               ),
             ),
           );

@@ -72,7 +72,7 @@ with TickerProviderStateMixin {
         builder: (context, child) => Transform.scale(
           scale: _scaleAnimation.value,
         child: Container(
-          height: 60,
+          height: 55,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: widget.backbround,
@@ -84,7 +84,7 @@ with TickerProviderStateMixin {
           ),
           child: !_isTextHide ? Text(widget.label, style: TextStyle(
             color: widget.fontColor,
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.bold
           )) : Container()
         )),

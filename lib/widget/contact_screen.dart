@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ppapapp/components/customTextfield.dart';
+import 'package:ppapapp/components/customTextfieldContact.dart';
 import 'package:ppapapp/model/ceo_model.dart';
 import 'package:ppapapp/model/user_model.dart';
 import 'package:ppapapp/service/api_service.dart';
@@ -24,48 +27,60 @@ class _ContactScreenState extends State<ContactScreen> {
             ),
           )
       ),
-      body: _listFutureTasks(context),
-    );
-  }
-  FutureBuilder _listFutureTasks(BuildContext context) {
-    return FutureBuilder<List<CeoModel>>(
-      future: Provider.of<ApiService>(context, listen: false).getCeo(),
-      builder: (BuildContext context, AsyncSnapshot<List<CeoModel>> snapshot) {
-        if(snapshot.connectionState == ConnectionState.done) {
-          if(snapshot.hasError) {
-            return Container(
-              child: Center(
-                child: Text("Something wrong"),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 40,vertical: 50),
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25)
+                  )
               ),
-            );
-          }
-          final tasks = snapshot.data;
-          return _listTasks(context: context, tasks: tasks);
-
-        } else {
-          return Container(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  ListView _listTasks({BuildContext context, List<CeoModel> tasks}) {
-    return ListView.builder(
-        itemCount: tasks.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: Container(
-              padding: EdgeInsets.all(10.0),
-              child: ListTile(
-                leading: Image.network(tasks[index].imagePath),
-                title: Text(tasks[index].nameTitle),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(height: 10),
+                  CustomTextFieldContact(
+                    controller: null,
+                    label: "កែងមហាវិថីនរោត្តម និងផ្លូវលេខ​ ១០៦ រាជធានីភ្នំពេញ",
+                    icon: Icon(Icons.location_on, size: 20,color: Color(0xFFF032f41),),
+                  ),
+                  SizedBox(height: 10),
+                  CustomTextFieldContact(
+                    controller: null,
+                    label: "023 46 66 40",
+                    icon: Icon(Icons.phone, size: 20,color: Color(0xFFF032f41),),
+                  ),
+                  SizedBox(height: 10),
+                  CustomTextFieldContact(
+                    controller: null,
+                    label: "info@mpwt_gov.kh",
+                    icon: Icon(Icons.email, size: 20,color: Color(0xFFF032f41),),
+                  ),
+                  SizedBox(height: 10),
+                  CustomTextFieldContact(
+                    controller: null,
+                    label: "Facebook.com/mpwt_gov.kh",
+                    icon: Icon(FontAwesomeIcons.facebook, size: 20,color: Color(0xFFF032f41),),
+                  ),
+                  SizedBox(height: 10),
+                  CustomTextFieldContact(
+                    controller: null,
+                    label: "www.mpwt_gov.kh",
+                    icon: Icon(Icons.language, size: 20,color: Color(0xFFF032f41),),
+                  ),
+                ],
               ),
-            ),
-          );
-        });
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

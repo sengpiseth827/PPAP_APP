@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ppapapp/service/api_service.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widget/griddashboard.dart';
 
@@ -9,48 +11,35 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String currentProfilePic = "https://vignette.wikia.nocookie.net/corpsebride/images/9/99/Corpse-bride.jpg/revision/latest?cb=20120124015137";
+
   String otherProfilePic = "https://goodstransporter.com/wp-content/uploads/2019/11/Phnom-Penh-Autonomous-Port-PPAP.jpg";
-//    SharedPreferences sharedPreferences;
-//  @override
-//  void initState() {
-//    super.initState();
-//    checkLoginStatus();
-//  }
-//
-//  checkLoginStatus() async {
-//    sharedPreferences = await SharedPreferences.getInstance();
-//    if(sharedPreferences.getString("token") == null) {
-//      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()), (Route<dynamic> route) => false);
-//    }
-//  }
-  custom() {
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar(
-          backgroundColor: Colors.white,
-          expandedHeight: 90.0,
-          floating: false,
-          pinned: true,
-          flexibleSpace: FlexibleSpaceBar(
-            centerTitle: true,
-            title: Container(
-              width: 150,
-                child: Image.asset("assets/images/headerlogo.jpg")
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              margin: EdgeInsets.only(top: 5),
-              child: GridDashboard(),
-            )
-          ),
-        ),
-      ],
-    );
+  SharedPreferences sharedPreferences;
+  String username= "" , email = "",company = "";
+
+  @override
+  void initState() {
+    super.initState();
+    getUserInfo();
+  }
+  getUserInfo() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("token") != null) {
+      String userId = sharedPreferences.getString("token");
+      final api = Provider.of<ApiService>(context, listen: false);
+      api.getUser().then((it)  {
+        it.forEach((f) async {
+          if(f.sysId == userId){
+           setState(() {
+             username = f.userName;
+             email = f.email;
+             company = f.company;
+           });
+          }
+        });
+      }).catchError((onError){
+        print(onError.toString());
+      });
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -101,31 +90,35 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               height: 110,
               color: Colors.white,
-//              color: Color(0xfff5f5f0),
               child: Row(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(top: 25,left: 15),
+                    padding: const EdgeInsets.only(top: 15,left: 15),
                     child: Column(
                       children: <Widget>[
-                        new CircleAvatar(
-                          backgroundImage: new NetworkImage(currentProfilePic),
+                        Container(
+                          height: 50,
+                          width: 50,
+                          child: new CircleAvatar(
+                            backgroundImage: new NetworkImage(otherProfilePic),
+                          ),
                         ),
                         SizedBox(height: 10,),
-                        new Text("Raksmey"),
+                        new Text(username),
                       ],
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 25,left: 25),
+                    padding: EdgeInsets.only(top: 30,left: 15),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
                           margin: EdgeInsets.only(right: 37),
                           child: Row(
                               children: <Widget>[
-                                new Text("Company:   "),
-                                new Text("company.com ,co.Ltd"),
+                                new Text("Company :   "),
+                                new Text(company),
                               ]
                           ),
                         ),
@@ -133,8 +126,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           margin: EdgeInsets.only(top: 5),
                           child: Row(
                               children: <Widget>[
-                                new Text("Email:   "),
-                                new Text("mwg.sengrakmsey@gmail.com"),
+                                new Text("Email :   "),
+                                new Text(email),
                               ]
                           ),
                         ),

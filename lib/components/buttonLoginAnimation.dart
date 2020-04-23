@@ -22,7 +22,7 @@ class ButtonLoginAnimation extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: 60,
+        height: 50,
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(

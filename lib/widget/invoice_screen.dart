@@ -1,6 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:ppapapp/components/buttonLoginAnimation.dart';
 import 'package:ppapapp/components/customTextfield.dart';
+import 'package:ppapapp/model/PdfViewPage.dart';
+import 'package:ppapapp/service/api_service.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class InvoiceScreen extends StatefulWidget {
   @override
@@ -8,7 +15,24 @@ class InvoiceScreen extends StatefulWidget {
 }
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
+
+  String urlPDFPath = "";
   TextEditingController etInvoice = new TextEditingController();
+
+  Future<File> getFileFromUrl(String url) async {
+    try {
+      var data = await http.get(url);
+      var bytes = data.bodyBytes;
+      var dir = await getApplicationDocumentsDirectory();
+      File file = File("${dir.path}/mypdfonline.pdf");
+
+      File urlFile = await file.writeAsBytes(bytes);
+      return urlFile;
+    } catch (e) {
+      throw Exception("Error opening url file");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,8 +67,17 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                     background: Colors.cyan,
                     fontColor: Colors.white,
                     borderColor: Colors.white,
-                    onTap: () async {
-//                        await Provider.of<ApiService>(context, listen: false).Login(etInvoice.text.toString());
+                    onTap: () {
+                      Provider.of<ApiService>(context, listen: false).postqrcode(etInvoice.text).then((value){
+                        print(value);
+                        getFileFromUrl(value).then((f) {
+                          urlPDFPath = f.path;
+                          print(urlPDFPath);
+                          if (urlPDFPath != null) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(path: urlPDFPath)));
+                          }
+                        });
+                      });
                     },
                   ),
                 ),

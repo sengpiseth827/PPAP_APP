@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:ppapapp/animation/fadeAnimation.dart';
 import 'package:ppapapp/components/customButtonAnimation.dart';
 import 'package:ppapapp/components/loginbutton.dart';
+import 'package:ppapapp/widget/login_activity.dart';
+import 'package:ppapapp/widget/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
 
@@ -44,33 +46,33 @@ class _LoginScreenState extends State<LoginScreen> {
                     )
                   ],
                 ),
-
+                SizedBox(height: 15),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    FadeAnimation(2.8,LoginButton(
+                    FadeAnimation(2.8,CustomButtonAnimation(
                       label: "Log In",
-                      background: Color(0xFF0000b3),
+                      backbround: Color(0xFF0000b3),
                       fontColor: Colors.white,
                       borderColor: Colors.white,
+                      child: LoginActivity(),
                     )),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                     FadeAnimation(3.2,CustomButtonAnimation(
                       label: "Sign Up",
-                      backbround: Color(0xFF00e600),
+                      backbround: Color(0xFF00cc00),
                       borderColor: Colors.white,
                       fontColor: Color(0xFFFFFFFF),
-                      child: LoginScreen(),
+                      child: SignUpScreen(),
                     )),
-                    SizedBox(height: 70),
+                    SizedBox(height: 40),
                     FadeAnimation(3.4,Text("Phnom Penh Autonomous Port", style: TextStyle(
                         color: Colors.black,
-                        fontSize: 17,
+                        fontSize: 15,
                     ))),
-                    SizedBox(height: 10),
                     FadeAnimation(3.6,Text("Version 0.1.0", style: TextStyle(
                       color: Colors.black,
-                      fontSize: 17,
+                      fontSize: 15,
                     )))
                   ],
                 )
