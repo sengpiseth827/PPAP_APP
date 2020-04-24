@@ -6,6 +6,7 @@ import 'package:ppapapp/components/buttonLoginAnimation.dart';
 import 'package:ppapapp/components/customTextfield.dart';
 import 'package:ppapapp/model/PdfViewPage.dart';
 import 'package:ppapapp/service/api_service.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,6 +17,7 @@ class InvoiceScreen extends StatefulWidget {
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
 
+  ProgressDialog pr;
   String urlPDFPath = "";
   TextEditingController etInvoice = new TextEditingController();
 
@@ -68,12 +70,26 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                     fontColor: Colors.white,
                     borderColor: Colors.white,
                     onTap: () {
+                      pr = new ProgressDialog(context);
+                      pr.update(
+                        progress: 40.0,
+                        message: "Loading...",
+                        progressWidget: Container(
+                            padding: EdgeInsets.all(8.0), child: CircularProgressIndicator()),
+                        maxProgress: 100.0,
+                        progressTextStyle: TextStyle(
+                            color: Colors.black, fontSize: 9.0, fontWeight: FontWeight.w400),
+                        messageTextStyle: TextStyle(
+                            color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w600),
+                      );
+                      pr.show();
                       Provider.of<ApiService>(context, listen: false).postqrcode(etInvoice.text).then((value){
                         print(value);
                         getFileFromUrl(value).then((f) {
                           urlPDFPath = f.path;
                           print(urlPDFPath);
                           if (urlPDFPath != null) {
+                            pr.hide();
                             Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(path: urlPDFPath)));
                           }
                         });
