@@ -35,7 +35,7 @@ class _LoginActivityState extends State<LoginActivity> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/crane.jpg"),
+                image: NetworkImage("http://ppaptest.truckingcambodia.com/datacontroller/imgview.php?&img=login.png"),
                 fit: BoxFit.contain,
                 alignment: Alignment.topCenter
               )
@@ -58,20 +58,20 @@ class _LoginActivityState extends State<LoginActivity> {
                               Navigator.pop(context);
                             },
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Icon(Icons.slow_motion_video, color: Colors.white,size: 32),
-                              Text("32°", style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18
-                              )),
-                              Text("Sat, 3 Aug", style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12
-                              ))
-                            ],
-                          )
+//                          Column(
+//                            crossAxisAlignment: CrossAxisAlignment.end,
+//                            children: <Widget>[
+//                              Icon(Icons.slow_motion_video, color: Colors.white,size: 32),
+//                              Text("32°", style: TextStyle(
+//                                color: Colors.white,
+//                                fontSize: 18
+//                              )),
+//                              Text("Sat, 3 Aug", style: TextStyle(
+//                                color: Colors.white,
+//                                fontSize: 12
+//                              ))
+//                            ],
+//                          )
                         ],
                       ),
                     ),
@@ -120,7 +120,6 @@ class _LoginActivityState extends State<LoginActivity> {
                           fontColor: Colors.white,
                           borderColor: Colors.white,
                           onTap: () async {
-//                            await Provider.of<ApiService>(context, listen: false).getUser(etEmail.text.toString(), etPassword.text.toString());
                             pr = new ProgressDialog(context);
                             pr.update(
                               progress: 40.0,
@@ -135,18 +134,14 @@ class _LoginActivityState extends State<LoginActivity> {
                             );
                             await pr.show();
                             final api = Provider.of<ApiService>(context, listen: false);
-                            api.getUser().then((it)  {
+                            api.userLogin(etEmail.text.toString(), etPassword.text.toString()).then((it)  {
+                              print(it);
                               it.forEach((f) async {
-                                print(f.tel+f.password);
-                                if(f.tel == etEmail.text.toString() && f.password == etPassword.text.toString()){
-                                  prefs = await SharedPreferences.getInstance();
-                                  await prefs.setString('username', f.tel);
-                                  await prefs.setString('password', f.password);
-                                  await prefs.setString('token', f.sysId);
-                                  _navigateToHome(f.sysId);
-                                }else{
-                                  print("object");
-                                }
+                                prefs = await SharedPreferences.getInstance();
+                                await prefs.setString('username', f.tel);
+                                await prefs.setString('password', f.password);
+                                await prefs.setString('token', f.sysId);
+                                _navigateToHome(f.sysId);
                               });
                             }).catchError((onError){
                               print(onError.toString());

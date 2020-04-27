@@ -4,6 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ppapapp/model/anouncement_model.dart';
 import 'package:ppapapp/model/ceo_model.dart';
+import 'package:ppapapp/model/contact_model.dart';
+import 'package:ppapapp/model/exchange_rate_model.dart';
+import 'package:ppapapp/model/product_model.dart';
 import 'package:ppapapp/model/service_model.dart';
 import 'package:ppapapp/model/user_model.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -35,7 +38,20 @@ abstract class ApiService {
   @GET("datamobile/getanouncement.php")
   Future<List<AnouncementModel>> getAnouncement();
 
+  @GET("datamobile/getrate.php")
+  Future<List<ExchangeRate>> getexchangerate();
+
+  @GET("datamobile/getcontact.php")
+  Future<List<ContactModel>> getcontact();
+
   @POST("datamobile/invview.php")
   Future<String> postqrcode(@Path() String id);
+
+  @POST("datamobile/setlogin.php?{uname} && {pass}")
+  Future<List<UserModel>> userLogin(@Path() String username, @Path() String password);
+
+  @POST("datamobile/setregister.php")
+  Future<List<UserModel>> postUser(@Path() String pass,@Path() String fname,@Path() String lname,@Path() String tel,
+      @Path() String email,@Path() String company,@Path() String address,);
 
 }

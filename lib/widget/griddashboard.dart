@@ -88,6 +88,21 @@ class GridDashboard extends StatelessWidget {
     try {
       String qrResult = await BarcodeScanner.scan();
       result = qrResult;
+      print("Result : "+result);
+      if(result.isNotEmpty && result != null){
+        await pr.show();
+        Provider.of<ApiService>(context, listen: false).postqrcode(result).then((value){
+          print(value);
+          getFileFromUrl(value).then((f) {
+            urlPDFPath = f.path;
+            print(urlPDFPath);
+            if (urlPDFPath != null) {
+              pr.hide();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(path: urlPDFPath)));
+            }
+          });
+        });
+      }
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         result = "Camera permission was denied";
@@ -99,19 +114,6 @@ class GridDashboard extends StatelessWidget {
     } catch (ex) {
       result = "Unknown Error $ex";
     }
-    print("Result : "+result);
-    await pr.show();
-    Provider.of<ApiService>(context, listen: false).postqrcode(result).then((value){
-      print(value);
-      getFileFromUrl(value).then((f) {
-        urlPDFPath = f.path;
-        print(urlPDFPath);
-        if (urlPDFPath != null) {
-          pr.hide();
-          Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(path: urlPDFPath)));
-        }
-      });
-    });
   }
 
   @override

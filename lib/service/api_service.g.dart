@@ -118,15 +118,87 @@ class _ApiService implements ApiService {
     if(_result.statusCode == 200) {
       String url = _result.request.baseUrl + 'datamobile/invview.php?id=' + id;
       print(url);
-//      if (await canLaunch(url)) {
-//        await launch(url,
-//          forceWebView: true
-//        );
-//        print(url);
-//      } else {
-//        print('Could not launch $url');
-//      }
       return url;
     }
+  }
+
+  @override
+  getexchangerate() async{
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<List<dynamic>> _result = await _dio.request('datamobile/getrate.php',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    print(_result.data);
+    var value = _result.data
+        .map((dynamic i) => ExchangeRate.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return Future.value(value);
+  }
+
+  @override
+  Future<List<UserModel>> userLogin(String username, String password) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<List<dynamic>> _result = await _dio.post("datamobile/setlogin.php?uname="+username+"&&pass="+password,
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    var value = _result.data
+        .map((dynamic i) => UserModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return Future.value(value);
+  }
+
+  @override
+  Future<List<UserModel>> postUser(String pass, String fname, String lname, String tel, String email, String company, String address) async{
+    String uname = fname+lname;
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<List<dynamic>> _result = await _dio.post("datamobile/setregister.php?&"
+        "uname="+uname+"&password="+pass+"&fname="+fname+"&lname="+lname+"&tel="+tel+"&email="+email+
+        "&company="+company+"&address="+address,
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    var value = _result.data
+        .map((dynamic i) => UserModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return Future.value(value);
+  }
+  @override
+  getcontact() async{
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<List<dynamic>> _result = await _dio.request('datamobile/getcontact.php',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    print(_result.data);
+    var value = _result.data
+        .map((dynamic i) => ContactModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return Future.value(value);
   }
 }

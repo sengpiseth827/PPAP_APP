@@ -103,7 +103,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       Text(
                         username,
                         style: TextStyle(
-                          color: Colors.redAccent,
+                          color:  Color(0xFF0000b3),
                           fontSize: 25.0,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1.0,

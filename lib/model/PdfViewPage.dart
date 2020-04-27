@@ -1,6 +1,7 @@
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ppapapp/components/customDialog.dart';
 
 class PdfViewPage extends StatefulWidget {
   final String path;
@@ -63,6 +64,16 @@ class _PdfViewPageState extends State<PdfViewPage> {
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
+          FloatingActionButton.extended(
+            backgroundColor: Colors.blue,
+            label: Text("Payment"),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => PaymentDialog(),
+              );
+            },
+          ),
           _currentPage > 0
               ? FloatingActionButton.extended(
                   backgroundColor: Colors.red,

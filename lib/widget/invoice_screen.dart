@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ppapapp/components/buttonLoginAnimation.dart';
@@ -57,10 +58,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
             padding: const EdgeInsets.all(8.0),
             child: new Column(
               children: <Widget>[
-                new  CustomTextField(
+                new  CustomTextFieldInvoice(
                   controller: etInvoice,
                   label: "Invoice Number",
                   icon: Icon(Icons.description, size: 27,color: Color(0xFFF032f41),),
+                  onTap: (){
+                    etInvoice.text = "INV";
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -70,30 +74,46 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                     fontColor: Colors.white,
                     borderColor: Colors.white,
                     onTap: () {
-                      pr = new ProgressDialog(context);
-                      pr.update(
-                        progress: 40.0,
-                        message: "Loading...",
-                        progressWidget: Container(
-                            padding: EdgeInsets.all(8.0), child: CircularProgressIndicator()),
-                        maxProgress: 100.0,
-                        progressTextStyle: TextStyle(
-                            color: Colors.black, fontSize: 9.0, fontWeight: FontWeight.w400),
-                        messageTextStyle: TextStyle(
-                            color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w600),
-                      );
-                      pr.show();
-                      Provider.of<ApiService>(context, listen: false).postqrcode(etInvoice.text).then((value){
-                        print(value);
-                        getFileFromUrl(value).then((f) {
-                          urlPDFPath = f.path;
-                          print(urlPDFPath);
-                          if (urlPDFPath != null) {
-                            pr.hide();
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(path: urlPDFPath)));
-                          }
+                      if(etInvoice.text.toString().isNotEmpty && etInvoice.text.toString() != null){
+                        pr = new ProgressDialog(context);
+                        pr.update(
+                          progress: 40.0,
+                          message: "Loading...",
+                          progressWidget: Container(
+                              padding: EdgeInsets.all(8.0), child: CircularProgressIndicator()),
+                          maxProgress: 100.0,
+                          progressTextStyle: TextStyle(
+                              color: Colors.black, fontSize: 9.0, fontWeight: FontWeight.w400),
+                          messageTextStyle: TextStyle(
+                              color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w600),
+                        );
+                        pr.show();
+                        Provider.of<ApiService>(context, listen: false).postqrcode(etInvoice.text).then((value){
+                          print(value);
+                          getFileFromUrl(value).then((f) {
+                            urlPDFPath = f.path;
+                            print(urlPDFPath);
+                            if (urlPDFPath != null) {
+                              pr.hide();
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(path: urlPDFPath)));
+                            }
+                          });
                         });
-                      });
+                      }else{
+                        AwesomeDialog(
+                          context: context,
+                          animType: AnimType.SCALE,
+                          dialogType: DialogType.INFO,
+                          body: Center(child: Text(
+                            'Please fill your invoice number.',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),),
+                          tittle: 'This is Ignored',
+                          desc:   'This is also Ignored',
+                          btnOkOnPress: () async{
+                          },
+                        ).show();
+                      }
                     },
                   ),
                 ),
