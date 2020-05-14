@@ -124,7 +124,7 @@ class GridDashboard extends StatelessWidget {
       height: MediaQuery.of(context).size.height,
       color: Colors.white,
       child: GridView.count(
-          primary: false,
+          physics: NeverScrollableScrollPhysics(),
           childAspectRatio: 1.0,
           padding: EdgeInsets.only(left: 15, right: 15, top: 30),
           crossAxisCount: 3,

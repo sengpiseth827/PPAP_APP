@@ -14,7 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String otherProfilePic = "https://goodstransporter.com/wp-content/uploads/2019/11/Phnom-Penh-Autonomous-Port-PPAP.jpg";
   SharedPreferences sharedPreferences;
-  String username= "" , email = "",company = "";
+  String username= "Username" , email = "example@gmail.com",company = "Company";
 
   @override
   void initState() {

@@ -2,6 +2,8 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ppapapp/components/customDialog.dart';
+import 'package:ppapapp/widget/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PdfViewPage extends StatefulWidget {
   final String path;
@@ -16,6 +18,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
   int _currentPage = 0;
   bool pdfReady = false;
   PDFViewController _pdfViewController;
+  SharedPreferences sharedPreferences;
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +70,16 @@ class _PdfViewPageState extends State<PdfViewPage> {
           FloatingActionButton.extended(
             backgroundColor: Colors.blue,
             label: Text("Payment"),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (_) => PaymentDialog(),
-              );
+            onPressed: () async{
+              sharedPreferences = await SharedPreferences.getInstance();
+              if(sharedPreferences.getString("token") == null) {
+                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => new LoginScreen()));
+              }else {
+                showDialog(
+                  context: context,
+                  builder: (_) => PaymentDialog(),
+                );
+              }
             },
           ),
           _currentPage > 0

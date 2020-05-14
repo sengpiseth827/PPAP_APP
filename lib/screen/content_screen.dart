@@ -31,16 +31,16 @@ class _ContentScreenState extends State<ContentScreen> {
   @override
   void initState() {
     super.initState();
-    checkLoginStatus();
+//    checkLoginStatus();
   }
 
-  checkLoginStatus() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    if(sharedPreferences.getString("token") == null) {
-      Navigator.pop(context,true);
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()), (Route<dynamic> route) => false);
-    }
-  }
+//  checkLoginStatus() async {
+//    sharedPreferences = await SharedPreferences.getInstance();
+//    if(sharedPreferences.getString("token") == null) {
+//      Navigator.pop(context,true);
+//      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()), (Route<dynamic> route) => false);
+//    }
+//  }
   String currentProfilePic = "https://vignette.wikia.nocookie.net/corpsebride/images/9/99/Corpse-bride.jpg/revision/latest?cb=20120124015137";
   String otherProfilePic = "https://goodstransporter.com/wp-content/uploads/2019/11/Phnom-Penh-Autonomous-Port-PPAP.jpg";
 

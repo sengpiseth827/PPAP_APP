@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ppapapp/service/api_service.dart';
+import 'package:ppapapp/widget/ABAPay_screen.dart';
+import 'package:ppapapp/widget/FTBPay_screen.dart';
+import 'package:ppapapp/widget/WingPay_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -172,7 +175,7 @@ class PaymentDialogState extends State<PaymentDialog>
                 height: 270,
                 child: Column(
                   children: <Widget>[
-                    new Text("Payment",style: TextStyle(fontWeight: FontWeight.bold),),
+                    new Text("Please choose the bank",style: TextStyle(fontWeight: FontWeight.bold),),
                     SizedBox(height: 15),
                     CustomTextFieldPayment(
                       controller: null,
@@ -189,15 +192,19 @@ class PaymentDialogState extends State<PaymentDialog>
                         ),
                       ),
                       onTap: () async {
-                        String url = "https://apps.apple.com/kh/app/ftb-mohabot-app/id1248167629";
-                        if (await canLaunch(url)) {
-                          await launch(url,
-                              forceWebView: true
-                          );
-                          print(url);
-                        } else {
-                          print('Could not launch $url');
-                        }
+                        Navigator.of(context).push(new MaterialPageRoute(
+                            builder: (BuildContext context)=>new FTBPayScreen(),
+                            settings: RouteSettings()
+                        ));
+//                        String url = "https://apps.apple.com/kh/app/ftb-mohabot-app/id1248167629";
+//                        if (await canLaunch(url)) {
+//                          await launch(url,
+//                              forceWebView: true
+//                          );
+//                          print(url);
+//                        } else {
+//                          print('Could not launch $url');
+//                        }
                       },
                     ),
                     SizedBox(height: 10),
@@ -216,15 +223,19 @@ class PaymentDialogState extends State<PaymentDialog>
                         ),
                       ),
                       onTap: () async {
-                        String url = "https://apps.apple.com/kh/app/aba-mobile-bank/id968860649";
-                        if (await canLaunch(url)) {
-                          await launch(url,
-                              forceWebView: true
-                          );
-                          print(url);
-                        } else {
-                          print('Could not launch $url');
-                        }
+                        Navigator.of(context).push(new MaterialPageRoute(
+                            builder: (BuildContext context)=>new ABAPayScreen(),
+                            settings: RouteSettings()
+                        ));
+//                        String url = "https://apps.apple.com/kh/app/aba-mobile-bank/id968860649";
+//                        if (await canLaunch(url)) {
+//                          await launch(url,
+//                              forceWebView: true
+//                          );
+//                          print(url);
+//                        } else {
+//                          print('Could not launch $url');
+//                        }
                       },
                     ),
                     SizedBox(height: 10),
@@ -243,15 +254,19 @@ class PaymentDialogState extends State<PaymentDialog>
                         ),
                       ),
                       onTap: () async {
-                        String url = "https://apps.apple.com/kh/app/wing-money/id1113286385";
-                        if (await canLaunch(url)) {
-                          await launch(url,
-                              forceWebView: true
-                          );
-                          print(url);
-                        } else {
-                          print('Could not launch $url');
-                        }
+                        Navigator.of(context).push(new MaterialPageRoute(
+                            builder: (BuildContext context)=>new WingPayScreen(),
+                            settings: RouteSettings()
+                        ));
+//                        String url = "https://apps.apple.com/kh/app/wing-money/id1113286385";
+//                        if (await canLaunch(url)) {
+//                          await launch(url,
+//                              forceWebView: true
+//                          );
+//                          print(url);
+//                        } else {
+//                          print('Could not launch $url');
+//                        }
                       },
                     ),
                     SizedBox(height: 10),

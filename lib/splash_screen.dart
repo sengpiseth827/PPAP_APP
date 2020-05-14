@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
           if (status) {
             _navigateToHome();
           } else {
-            _navigateToLogin();
+            _navigateToHome();
           }
         }
     );

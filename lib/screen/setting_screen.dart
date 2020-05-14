@@ -4,6 +4,7 @@ import 'package:ppapapp/components/ChangeAddressDialog.dart';
 import 'package:ppapapp/components/ChangePasswordDialog.dart';
 import 'package:ppapapp/components/ChangeProfileDialog.dart';
 import 'package:ppapapp/service/api_service.dart';
+import 'package:ppapapp/widget/history_screen.dart';
 import 'package:ppapapp/widget/login_screen.dart';
 import 'package:ppapapp/widget/profile_screen.dart';
 import 'package:provider/provider.dart';
@@ -19,16 +20,20 @@ class _SettingScreenState extends State<SettingScreen> {
   SharedPreferences mySPrefs;
   String otherProfilePic = "https://goodstransporter.com/wp-content/uploads/2019/11/Phnom-Penh-Autonomous-Port-PPAP.jpg";
   SharedPreferences sharedPreferences;
-  String username= "" ,phone = "";
+  String username= "Username" ,phone = "00 000 000";
 
   @override
   void initState() {
     super.initState();
-    getUserInfo();
+    setState(() {
+      getUserInfo();
+    });
   }
   getUserInfo() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    if(sharedPreferences.getString("token") != null) {
+    if(sharedPreferences.getString("token") == null) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => new LoginScreen()));
+    }else{
       String userId = sharedPreferences.getString("token");
       final api = Provider.of<ApiService>(context, listen: false);
       api.getUser().then((it)  {
@@ -143,6 +148,16 @@ class _SettingScreenState extends State<SettingScreen> {
                     height: MediaQuery.of(context).size.height,
                     child: Column(
                       children: <Widget>[
+                        new ListTile(
+                          title: Text("History",style: TextStyle(fontSize: 16,color: Colors.black),),
+                          trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,size: 20,),
+                          onTap: (){
+                            showDialog(
+                              context: context,
+                              builder: (_) => HistoryScreen(),
+                            );
+                          },
+                        ),
                         new ListTile(
                           title: Text("Change Password",style: TextStyle(fontSize: 16,color: Colors.black),),
                           trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,size: 20,),
