@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "906530058579",
+    "firebase_url": "https://ppap-9ccd3.firebaseio.com",
+    "project_id": "ppap-9ccd3",
+    "storage_bucket": "ppap-9ccd3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:906530058579:android:89fe2677f1520cddbff1a6",
+        "android_client_info": {
+          "package_name": "com.example.ppapapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "906530058579-3u39oq8129md3l9t8fhdt2s8cdls7v79.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMGc3kTDrd-xC9vcZUKIpKpjbF0FPE1Qo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "906530058579-3u39oq8129md3l9t8fhdt2s8cdls7v79.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

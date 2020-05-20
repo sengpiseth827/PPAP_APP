@@ -115,7 +115,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         etPhonenumber.text,
                         etEmail.text,
                         etCompany.text,
-                        etAddress.text);
+                        etAddress.text).then((it){
+                          AwesomeDialog(
+                            context: context,
+                            animType: AnimType.SCALE,
+                            dialogType: DialogType.INFO,
+                            body: Center(child: Text(
+                              'Successfully!!!',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),),
+                            tittle: 'This is Ignored',
+                            desc:   'This is also Ignored',
+                            btnOkOnPress: () async{},
+                            ).show();
+                        });
                   }else{
                     AwesomeDialog(
                       context: context,

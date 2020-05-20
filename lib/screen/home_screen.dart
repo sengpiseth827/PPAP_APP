@@ -54,14 +54,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Image.asset("assets/images/logo.jpg")
             ),
             Container(
-              margin: EdgeInsets.only(left: 50),
+              margin: EdgeInsets.only(left: 5),
               child: Column(
                 children: <Widget>[
-                  new Text(
-                    'កំពង់ផែស្វយ័តភ្នំពេញ',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 11
+                  Container(
+                    margin: EdgeInsets.only(right: 50),
+                    child: new Text(
+                      'កំពង់ផែស្វយ័តភ្នំពេញ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 11
+                      ),
                     ),
                   ),
                   new Text(

@@ -3,6 +3,7 @@ part of 'api_service.dart';
 class _ApiService implements ApiService {
   _ApiService(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
+//    this.baseUrl ??= 'http://epayment.ppap.com.kh/';
     this.baseUrl ??= 'http://ppaptest.truckingcambodia.com/';
   }
 
@@ -167,9 +168,8 @@ class _ApiService implements ApiService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final Response<List<dynamic>> _result = await _dio.post("datamobile/setregister.php?&"
-        "uname="+uname+"&password="+pass+"&fname="+fname+"&lname="+lname+"&tel="+tel+"&email="+email+
-        "&company="+company+"&address="+address,
+    final Response<List<dynamic>> _result = await _dio.post("datamobile/new_register.php?Uname="+uname+"&Password="+pass
+        +"&Fname="+fname+"&Lname="+lname+"&Utype=Client"+"&Tel="+tel+"&Email="+email+"&Company="+company+"&Addr="+address+"",
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
