@@ -40,7 +40,7 @@ class _SettingScreenState extends State<SettingScreen> {
         it.forEach((f) async {
           if(f.sysId == userId){
             setState(() {
-              username = f.userName;
+              username = f.firstName;
               phone = f.tel;
             });
           }
@@ -153,6 +153,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       children: <Widget>[
                         new ListTile(
                           title: Text("History",style: TextStyle(fontSize: 16,color: Colors.black),),
+                          leading: Icon(Icons.history),
                           trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,size: 20,),
                           onTap: (){
                             showDialog(
@@ -163,6 +164,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                         new ListTile(
                           title: Text("Change Password",style: TextStyle(fontSize: 16,color: Colors.black),),
+                          leading: Icon(Icons.vpn_key),
                           trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,size: 20,),
                           onTap: (){
                             showDialog(
@@ -177,6 +179,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),),
                         new ListTile(
                           title: Text("Change Address",style: TextStyle(fontSize: 16,color: Colors.black),),
+                          leading: Icon(Icons.location_on),
                           trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,size: 20,),
                           onTap: (){
                             showDialog(
@@ -191,6 +194,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),),
                         new ListTile(
                           title: Text("Change Profile",style: TextStyle(fontSize: 16,color: Colors.black),),
+                          leading: Icon(Icons.person_outline),
                           trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,size: 20,),
                           onTap: (){
                             showDialog(
@@ -205,6 +209,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),),
                         new ListTile(
                           title: Text("Log Out",style: TextStyle(fontSize: 16,color: Colors.black),),
+                          leading: Icon(Icons.power_settings_new),
                           onTap: () async{
                             AwesomeDialog(
                               context: context,

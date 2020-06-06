@@ -22,6 +22,8 @@ class _PdfViewPageState extends State<PdfViewPage> {
 
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context).settings.arguments;
+    print(data);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF0000b3),
@@ -77,7 +79,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
               }else {
                 showDialog(
                   context: context,
-                  builder: (_) => PaymentDialog(),
+                  builder: (_) => PaymentDialog(data),
                 );
               }
             },

@@ -98,7 +98,7 @@ class GridDashboard extends StatelessWidget {
             print(urlPDFPath);
             if (urlPDFPath != null) {
               pr.hide();
-              Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(path: urlPDFPath)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(path: urlPDFPath),settings: RouteSettings(arguments: result)));
             }
           });
         });

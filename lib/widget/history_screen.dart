@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ppapapp/model/history_model.dart';
 import 'package:ppapapp/model/service_model.dart';
 import 'package:ppapapp/model/user_model.dart';
 import 'package:ppapapp/service/api_service.dart';
@@ -31,9 +32,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
   FutureBuilder _listFutureTasks(BuildContext context) {
-    return FutureBuilder<List<ServiceModel>>(
-      future: Provider.of<ApiService>(context, listen: false).getService(),
-      builder: (BuildContext context, AsyncSnapshot<List<ServiceModel>> snapshot) {
+    return FutureBuilder<List<HistoryModel>>(
+      future: Provider.of<ApiService>(context, listen: false).getHistory('2'),
+      builder: (BuildContext context, AsyncSnapshot<List<HistoryModel>> snapshot) {
         if(snapshot.connectionState == ConnectionState.done) {
           if(snapshot.hasError) {
             return Container(
@@ -56,9 +57,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  ListView _listTasks({BuildContext context, List<ServiceModel> tasks}) {
+  ListView _listTasks({BuildContext context, List<HistoryModel> tasks}) {
     return ListView.builder(
-        itemCount: 4,
+        itemCount: tasks.length,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: EdgeInsets.only(top: 8,left: 8,right: 8),
@@ -70,7 +71,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   children: <Widget>[
                     SizedBox(height: 10),
                     Text(
-                      "Transfered to ABA BANK",
+                      "Transfered to "+ tasks[index].bank,
                       style: TextStyle(color: Colors.black54,fontSize: 20),
                     ),
                     SizedBox(height: 20),
@@ -83,7 +84,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             style: TextStyle(color: Colors.black),
                           ),
                           Text(
-                            "121212121",
+                            tasks[index].iD,
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "Date Paid :",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          Text(
+                            tasks[index].datePay,
                             style: TextStyle(color: Colors.black),
                           ),
                         ],
@@ -99,7 +116,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             style: TextStyle(color: Colors.black),
                           ),
                           Text(
-                            "INV9020939",
+                            tasks[index].payFor,
                             style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,),
                           ),
                         ],
@@ -115,7 +132,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             style: TextStyle(color: Colors.black),
                           ),
                           Text(
-                            "250.0"+"\$",
+                            tasks[index].amount+"\$",
                             style: TextStyle(color: Colors.black),
                           ),
                         ],
@@ -131,7 +148,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             style: TextStyle(color: Colors.black),
                           ),
                           Text(
-                            "001423955",
+                            tasks[index].fromAccountNum,
                             style: TextStyle(color: Colors.black),
                           ),
                         ],
@@ -147,7 +164,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             style: TextStyle(color: Colors.black),
                           ),
                           Text(
-                            "000454947",
+                            tasks[index].toAccountNum,
                             style: TextStyle(color: Colors.black),
                           ),
                         ],
@@ -163,7 +180,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             style: TextStyle(color: Colors.black),
                           ),
                           Text(
-                            "SENG PISETH",
+                            tasks[index].description,
                             style: TextStyle(color: Colors.black),
                           ),
                         ],
@@ -179,7 +196,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             style: TextStyle(color: Colors.black),
                           ),
                           Text(
-                            "250.0"+"\$",
+                            tasks[index].amount+"\$",
                             style: TextStyle(color: Colors.green),
                           ),
                         ],

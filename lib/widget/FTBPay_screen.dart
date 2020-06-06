@@ -4,12 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ppapapp/components/customDescriptionTextfield.dart';
 import 'package:ppapapp/components/customTextfieldContact.dart';
+import 'package:ppapapp/model/ScreenArguments.dart';
+import 'package:ppapapp/model/payment_model.dart';
 import 'package:ppapapp/model/product_model.dart';
 import 'package:ppapapp/model/user_model.dart';
 import 'package:ppapapp/components/buttonLoginAnimation.dart';
 import 'package:ppapapp/components/customTextfield.dart';
+import 'package:ppapapp/screen/content_screen.dart';
 import 'package:ppapapp/service/api_service.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'login_screen.dart';
 
 class FTBPayScreen extends StatefulWidget {
 
@@ -21,9 +27,52 @@ class _FTBPayScreenState extends State<FTBPayScreen> {
 
   TextEditingController etAccount = new TextEditingController();
   TextEditingController etAmount = new TextEditingController();
+  TextEditingController etDescription = new TextEditingController();
+  String amount,userid;
+  SharedPreferences sharedPreferences;
+  String account;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      getUserInfo();
+    });
+  }
+  getUserInfo() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("token") == null) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => new LoginScreen()));
+    }else{
+       setState(() {
+         userid = sharedPreferences.getString("token");
+       });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final ScreenArguments data = ModalRoute.of(context).settings.arguments;
+    final api = Provider.of<ApiService>(context, listen: false);
+    api.getInvoice(data.data).then((it)  {
+      it.forEach((f) async {
+        setState(() {
+          etAmount.text = f.amount;
+          amount = f.amount;
+        });
+      });
+    }).catchError((onError){
+      print(onError.toString());
+    });
+    api.getBank(data.message).then((it)  {
+      it.forEach((f) async {
+        setState(() {
+          account = f.accnumber;
+        });
+      });
+    }).catchError((onError){
+      print(onError.toString());
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -60,7 +109,7 @@ class _FTBPayScreenState extends State<FTBPayScreen> {
                  Padding(
                    padding: EdgeInsets.only(bottom: 15),
                    child: Text(
-                     "Account Number : 000454947",
+                     "Account Number : "+account,
                      style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: Color(0xFFF234253)),
                    ),
                  ),
@@ -79,7 +128,7 @@ class _FTBPayScreenState extends State<FTBPayScreen> {
                   ),
                   SizedBox(height: 5),
                   CustomDescriptionTextField(
-                    controller: etAmount,
+                    controller: etDescription,
                     label: "Description",
                     isPassword: false,
                     icon: Icon(Icons.create, size: 20,color: Color(0xFFF032f41),),
@@ -91,18 +140,51 @@ class _FTBPayScreenState extends State<FTBPayScreen> {
                     fontColor: Colors.white,
                     borderColor: Colors.white,
                     onTap: () async {
-                      AwesomeDialog(
-                        context: context,
-                        animType: AnimType.SCALE,
-                        dialogType: DialogType.INFO,
-                        body: Center(child: Text(
-                          'Please check your information again!',
-                          style: TextStyle(fontStyle: FontStyle.italic),
-                        ),),
-                        tittle: 'This is Ignored',
-                        desc:   'This is also Ignored',
-                        btnOkOnPress: () async{},
-                      ).show();
+                      final payment = PaymentModel(
+                        bank : data.message,
+                        payFor : data.data,
+                        amount : amount,
+                        toAccountName : "null",
+                        toAccountNum : account,
+                        fromAccountName : "null",
+                        fromAccountNum : etAccount.text,
+                        description : etDescription.text,
+                        status : "RGS",
+                        type : data.data,
+                        datePay : "2020-06-02 07:30:43",
+                        createBy : "null",
+                        dateCreate : "2020-06-02 07:30:43",
+                        userid : userid,
+                      );
+                      await Provider.of<ApiService>(context, listen: false)
+                          .payment(payment).then((it){
+                        AwesomeDialog(
+                          context: context,
+                          animType: AnimType.SCALE,
+                          dialogType: DialogType.INFO,
+                          body: Center(child: Text(
+                            'Successfully!!!',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),),
+                          tittle: 'This is Ignored',
+                          desc:   'This is also Ignored',
+                          btnOkOnPress: () async{
+                            _navigateToHome();
+                          },
+                        ).show();
+                      });
+//                      AwesomeDialog(
+//                        context: context,
+//                        animType: AnimType.SCALE,
+//                        dialogType: DialogType.INFO,
+//                        body: Center(child: Text(
+//                          'Please check your information again!',
+//                          style: TextStyle(fontStyle: FontStyle.italic),
+//                        ),),
+//                        tittle: 'This is Ignored',
+//                        desc:   'This is also Ignored',
+//                        btnOkOnPress: () async{},
+//                      ).show();
                     },
                   ),
                 ],
@@ -111,6 +193,15 @@ class _FTBPayScreenState extends State<FTBPayScreen> {
           ],
         )
       ),
+    );
+  }
+  void _navigateToHome(){
+    Navigator.pop(context,true);// close button arrow back
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ContentScreen(),
+          settings: RouteSettings()),
     );
   }
 }

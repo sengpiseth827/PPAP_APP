@@ -3,8 +3,8 @@ part of 'api_service.dart';
 class _ApiService implements ApiService {
   _ApiService(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
-//    this.baseUrl ??= 'http://epayment.ppap.com.kh/';
-    this.baseUrl ??= 'http://ppaptest.truckingcambodia.com/';
+    this.baseUrl ??= 'http://epayment.ppap.com.kh/';
+//    this.baseUrl ??= 'http://ppaptest.truckingcambodia.com/';
   }
 
   final Dio _dio;
@@ -58,12 +58,12 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<CeoModel> getCeo() async {
-    CeoModel  data = new CeoModel();
+  getCeo() async {
+//    CeoModel  data = new CeoModel();
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final Response _result = await _dio.request('datamobile/getceo.php',
+    final Response<List<dynamic>> _result = await _dio.request('datamobile/getceo.php',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -72,12 +72,15 @@ class _ApiService implements ApiService {
             baseUrl: baseUrl),
         data: _data);
     print(_result.data);
-    for(var i=0; i<10;i++){
-      data = CeoModel.fromJson(_result.data[i.toString()]);
-      print(data.nameTitle);
-      return Future.value(data);
-    }
-//    return Future.value(data);
+//    for(var i=0; i<10;i++){
+//      data = CeoModel.fromJson(_result.data[i.toString()]);
+//      print(data.nameTitle);
+//      return Future.value(data);
+//    }
+    var value = _result.data
+        .map((dynamic i) => CeoModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return Future.value(value);
   }
 
   @override
@@ -198,6 +201,112 @@ class _ApiService implements ApiService {
     print(_result.data);
     var value = _result.data
         .map((dynamic i) => ContactModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return Future.value(value);
+  }
+
+  @override
+  Future<List<HistoryModel>> getHistory(String id) async{
+    FormData formData = FormData.fromMap({
+      "id": id,
+    });
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<List<dynamic>> _result = await _dio.post('datamobile/getpayhistory.php?userid='+id,
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: formData);
+    var value = _result.data
+        .map((dynamic i) => HistoryModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return Future.value(value);
+  }
+
+  @override
+  Future<List<InvoiceModel>> getInvoice(String id) async{
+    FormData formData = FormData.fromMap({
+      "id": id,
+    });
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<List<dynamic>> _result = await _dio.post('datamobile/payment.php?invnum='+id,
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: formData);
+    print("Response :"+_result.data.toString());
+    var value = _result.data
+        .map((dynamic i) => InvoiceModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return Future.value(value);
+  }
+
+  @override
+  Future<List<BankModel>> getBank(String id) async{
+    FormData formData = FormData.fromMap({
+      "id": id,
+    });
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<List<dynamic>> _result = await _dio.post('datamobile/getbank.php?banktype='+id,
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: formData);
+    print("Response :"+_result.data.toString());
+    var value = _result.data
+        .map((dynamic i) => BankModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return Future.value(value);
+  }
+
+  @override
+  Future<List<PaymentModel>> payment(PaymentModel paymentModel) async{
+    FormData formData = FormData.fromMap({
+      'ID': paymentModel.iD,
+      'Bank': paymentModel.bank,
+      'PayFor': paymentModel.payFor,
+      'amount': paymentModel.amount,
+      'ToAccountName': paymentModel.toAccountName,
+      'ToAccountNum': paymentModel.toAccountNum,
+      'FromAccountName': paymentModel.fromAccountName,
+      'FromAccountNum': paymentModel.fromAccountNum,
+      'Description': paymentModel.description,
+      'Status': paymentModel.status,
+      'Type': paymentModel.type,
+      'DatePay': paymentModel.datePay,
+      'CreateBy': paymentModel.createBy,
+      'DateCreate': paymentModel.dateCreate,
+      'userid': paymentModel.userid,
+    });
+    print(formData);
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<List<dynamic>> _result = await _dio.post('datamobile/getpayment.php',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: formData);
+    print("Response :"+_result.data.toString());
+    var value = _result.data
+        .map((dynamic i) => PaymentModel.fromJson(i as Map<String, dynamic>))
         .toList();
     return Future.value(value);
   }

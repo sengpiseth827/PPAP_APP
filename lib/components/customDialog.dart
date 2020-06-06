@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ppapapp/model/ScreenArguments.dart';
 import 'package:ppapapp/service/api_service.dart';
 import 'package:ppapapp/widget/ABAPay_screen.dart';
 import 'package:ppapapp/widget/FTBPay_screen.dart';
@@ -131,14 +132,23 @@ class FunkyOverlayState extends State<FunkyOverlay>
 }
 
 class PaymentDialog extends StatefulWidget {
+
+  String data;
+  PaymentDialog(this.data);
+
   @override
-  State<StatefulWidget> createState() => PaymentDialogState();
+  State<StatefulWidget> createState() => PaymentDialogState(data);
 }
 
 class PaymentDialogState extends State<PaymentDialog>
     with SingleTickerProviderStateMixin {
   AnimationController controller;
   Animation<double> scaleAnimation;
+
+  String data;
+  PaymentDialogState(String data) {
+    this.data = data;
+  }
 
   @override
   void initState() {
@@ -158,6 +168,7 @@ class PaymentDialogState extends State<PaymentDialog>
 
   @override
   Widget build(BuildContext context) {
+    print("Dialog :"+data);
     return Center(
       child: Material(
         color: Colors.transparent,
@@ -194,7 +205,7 @@ class PaymentDialogState extends State<PaymentDialog>
                       onTap: () async {
                         Navigator.of(context).push(new MaterialPageRoute(
                             builder: (BuildContext context)=>new FTBPayScreen(),
-                            settings: RouteSettings()
+                            settings: RouteSettings(arguments: ScreenArguments(data,"FTB"))
                         ));
 //                        String url = "https://apps.apple.com/kh/app/ftb-mohabot-app/id1248167629";
 //                        if (await canLaunch(url)) {
@@ -225,7 +236,7 @@ class PaymentDialogState extends State<PaymentDialog>
                       onTap: () async {
                         Navigator.of(context).push(new MaterialPageRoute(
                             builder: (BuildContext context)=>new ABAPayScreen(),
-                            settings: RouteSettings()
+                            settings: RouteSettings(arguments: data)
                         ));
 //                        String url = "https://apps.apple.com/kh/app/aba-mobile-bank/id968860649";
 //                        if (await canLaunch(url)) {
@@ -256,7 +267,7 @@ class PaymentDialogState extends State<PaymentDialog>
                       onTap: () async {
                         Navigator.of(context).push(new MaterialPageRoute(
                             builder: (BuildContext context)=>new WingPayScreen(),
-                            settings: RouteSettings()
+                            settings: RouteSettings(arguments: data)
                         ));
 //                        String url = "https://apps.apple.com/kh/app/wing-money/id1113286385";
 //                        if (await canLaunch(url)) {

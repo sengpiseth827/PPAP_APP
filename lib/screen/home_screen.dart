@@ -15,6 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String otherProfilePic = "https://goodstransporter.com/wp-content/uploads/2019/11/Phnom-Penh-Autonomous-Port-PPAP.jpg";
   SharedPreferences sharedPreferences;
   String username= "Username" , email = "example@gmail.com",company = "Company";
+  bool _visible = false;
 
   @override
   void initState() {
@@ -24,6 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
   getUserInfo() async {
     sharedPreferences = await SharedPreferences.getInstance();
     if(sharedPreferences.getString("token") != null) {
+      setState(() {
+        _visible = true;
+      });
       String userId = sharedPreferences.getString("token");
       final api = Provider.of<ApiService>(context, listen: false);
       api.getUser().then((it)  {
@@ -90,54 +94,57 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            Container(
-              height: 110,
-              color: Colors.white,
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 15,left: 15),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 50,
-                          width: 50,
-                          child: new CircleAvatar(
-                            backgroundImage: new NetworkImage(otherProfilePic),
+            Visibility(
+              visible: _visible,
+              child: Container(
+                height: 110,
+                color: Colors.white,
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15,left: 15),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 50,
+                            width: 50,
+                            child: new CircleAvatar(
+                              backgroundImage: new NetworkImage(otherProfilePic),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 10,),
-                        new Text(username),
-                      ],
+                          SizedBox(height: 10,),
+                          new Text(username),
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 30,left: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(right: 37),
-                          child: Row(
-                              children: <Widget>[
-                                new Text("Company :   "),
-                                new Text(company),
-                              ]
+                    Padding(
+                      padding: EdgeInsets.only(top: 30,left: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(right: 37),
+                            child: Row(
+                                children: <Widget>[
+                                  new Text("Company :   "),
+                                  new Text(company),
+                                ]
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 5),
-                          child: Row(
-                              children: <Widget>[
-                                new Text("Email :   "),
-                                new Text(email),
-                              ]
+                          Container(
+                            margin: EdgeInsets.only(top: 5),
+                            child: Row(
+                                children: <Widget>[
+                                  new Text("Email :   "),
+                                  new Text(email),
+                                ]
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             SizedBox(height: 0.1,),
