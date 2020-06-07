@@ -46,6 +46,7 @@ class _FTBPayScreenState extends State<FTBPayScreen> {
     }else{
        setState(() {
          userid = sharedPreferences.getString("token");
+         print("user ID" +userid);
        });
     }
   }
@@ -64,14 +65,21 @@ class _FTBPayScreenState extends State<FTBPayScreen> {
     }).catchError((onError){
       print(onError.toString());
     });
-    api.getBank(data.message).then((it)  {
+    final api1 = Provider.of<ApiService>(context, listen: false);
+    api1.getBank(data.message).then((it)  {
       it.forEach((f) async {
         setState(() {
           account = f.accnumber;
+          print("Account : "+account);
         });
       });
     }).catchError((onError){
       print(onError.toString());
+    });
+    setState(() {
+      if(amount == null){
+        amount = etAmount.text;
+      }
     });
     return Scaffold(
       backgroundColor: Colors.white,
@@ -117,21 +125,21 @@ class _FTBPayScreenState extends State<FTBPayScreen> {
                     controller: etAccount,
                     label: "Bank Account Number",
                     isPassword: false,
-                    icon: Icon(Icons.account_balance, size: 20,color: Color(0xFFF032f41),),
+                    icon: Icon(Icons.account_balance, size: 20,color: Color(0xFFF032f41)),
                   ),
                   SizedBox(height: 5),
                   CustomTextField(
                     controller: etAmount,
                     label: "Amount",
                     isPassword: false,
-                    icon: Icon(Icons.attach_money, size: 20,color: Color(0xFFF032f41),),
+                    icon: Icon(Icons.attach_money, size: 20,color: Color(0xFFF032f41)),
                   ),
                   SizedBox(height: 5),
                   CustomDescriptionTextField(
                     controller: etDescription,
                     label: "Description",
                     isPassword: false,
-                    icon: Icon(Icons.create, size: 20,color: Color(0xFFF032f41),),
+                    icon: Icon(Icons.create, size: 20,color: Color(0xFFF032f41)),
                   ),
                   SizedBox(height: 10),
                   ButtonLoginAnimation(
@@ -140,24 +148,9 @@ class _FTBPayScreenState extends State<FTBPayScreen> {
                     fontColor: Colors.white,
                     borderColor: Colors.white,
                     onTap: () async {
-                      final payment = PaymentModel(
-                        bank : data.message,
-                        payFor : data.data,
-                        amount : amount,
-                        toAccountName : "null",
-                        toAccountNum : account,
-                        fromAccountName : "null",
-                        fromAccountNum : etAccount.text,
-                        description : etDescription.text,
-                        status : "RGS",
-                        type : data.data,
-                        datePay : "2020-06-02 07:30:43",
-                        createBy : "null",
-                        dateCreate : "2020-06-02 07:30:43",
-                        userid : userid,
-                      );
                       await Provider.of<ApiService>(context, listen: false)
-                          .payment(payment).then((it){
+                          .payment(data.data, data.message, amount, "null", account, "null",
+                          etAccount.text, etDescription.text, userid).then((it){
                         AwesomeDialog(
                           context: context,
                           animType: AnimType.SCALE,
@@ -173,18 +166,6 @@ class _FTBPayScreenState extends State<FTBPayScreen> {
                           },
                         ).show();
                       });
-//                      AwesomeDialog(
-//                        context: context,
-//                        animType: AnimType.SCALE,
-//                        dialogType: DialogType.INFO,
-//                        body: Center(child: Text(
-//                          'Please check your information again!',
-//                          style: TextStyle(fontStyle: FontStyle.italic),
-//                        ),),
-//                        tittle: 'This is Ignored',
-//                        desc:   'This is also Ignored',
-//                        btnOkOnPress: () async{},
-//                      ).show();
                     },
                   ),
                 ],

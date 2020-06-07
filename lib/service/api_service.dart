@@ -69,6 +69,7 @@ abstract class ApiService {
       @Path() String email,@Path() String company,@Path() String address,);
 
   @POST("datamobile/getpayment.php")
-  Future<List<PaymentModel>> payment(PaymentModel paymentModel);
+  Future<List<PaymentModel>> payment(@Path() String payfor, @Path() String bank, @Path() String amount, @Path() String toaccountname,
+      @Path() String toaccountnum, @Path() String fromaccountname, @Path() String fromaccontnum, @Path() String description, @Path() String userid );
 
 }

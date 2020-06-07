@@ -1,8 +1,11 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ppapapp/components/customDialog.dart';
+import 'package:ppapapp/service/api_service.dart';
 import 'package:ppapapp/widget/login_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PdfViewPage extends StatefulWidget {
@@ -19,11 +22,22 @@ class _PdfViewPageState extends State<PdfViewPage> {
   bool pdfReady = false;
   PDFViewController _pdfViewController;
   SharedPreferences sharedPreferences;
+  bool checked = false;
 
   @override
   Widget build(BuildContext context) {
     final data = ModalRoute.of(context).settings.arguments;
     print(data);
+    final api = Provider.of<ApiService>(context, listen: false);
+    api.getInvoice(data).then((it)  {
+      setState(() {
+        print("Invoice : ");
+        print(it);
+      });
+    }).catchError((onError){
+      print(onError.toString());
+      checked = true;
+    });
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF0000b3),
@@ -77,10 +91,26 @@ class _PdfViewPageState extends State<PdfViewPage> {
               if(sharedPreferences.getString("token") == null) {
                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => new LoginScreen()));
               }else {
-                showDialog(
-                  context: context,
-                  builder: (_) => PaymentDialog(data),
-                );
+                if(checked){
+                  AwesomeDialog(
+                    context: context,
+                    animType: AnimType.SCALE,
+                    dialogType: DialogType.INFO,
+                    body: Center(child: Text(
+                      'This Invoice Number has been paid.',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),),
+                    tittle: 'This is Ignored',
+                    desc:   'This is also Ignored',
+                    btnCancelOnPress: (){},
+                    btnOkOnPress: () async{},
+                  ).show();
+                }else{
+                  showDialog(
+                    context: context,
+                    builder: (_) => PaymentDialog(data),
+                  );
+                }
               }
             },
           ),

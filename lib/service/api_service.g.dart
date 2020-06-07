@@ -266,7 +266,7 @@ class _ApiService implements ApiService {
             extra: _extra,
             baseUrl: baseUrl),
         data: formData);
-    print("Response :"+_result.data.toString());
+    print(_result.data);
     var value = _result.data
         .map((dynamic i) => BankModel.fromJson(i as Map<String, dynamic>))
         .toList();
@@ -274,36 +274,22 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<List<PaymentModel>> payment(PaymentModel paymentModel) async{
-    FormData formData = FormData.fromMap({
-      'ID': paymentModel.iD,
-      'Bank': paymentModel.bank,
-      'PayFor': paymentModel.payFor,
-      'amount': paymentModel.amount,
-      'ToAccountName': paymentModel.toAccountName,
-      'ToAccountNum': paymentModel.toAccountNum,
-      'FromAccountName': paymentModel.fromAccountName,
-      'FromAccountNum': paymentModel.fromAccountNum,
-      'Description': paymentModel.description,
-      'Status': paymentModel.status,
-      'Type': paymentModel.type,
-      'DatePay': paymentModel.datePay,
-      'CreateBy': paymentModel.createBy,
-      'DateCreate': paymentModel.dateCreate,
-      'userid': paymentModel.userid,
-    });
-    print(formData);
+  Future<List<PaymentModel>> payment(String payfor, String bank, String amount, String toaccountname, String toaccountnum, String fromaccountname,
+      String fromaccontnum, String description, String userid) async{
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final Response<List<dynamic>> _result = await _dio.post('datamobile/getpayment.php',
+    final Response<List<dynamic>> _result = await _dio.post('datamobile/getpayment.php?PayFor='+payfor+'&Bank='+
+        bank+'&amount='+amount+'&ToAccountName='+toaccountname+'&ToAccountNum='+toaccountnum
+        +'&FromAccountName='+fromaccountname+'&FromAccountNum='+fromaccontnum+'&Description='+description
+        +'&userid='+userid,
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
             headers: <String, dynamic>{},
             extra: _extra,
             baseUrl: baseUrl),
-        data: formData);
+        data: _data);
     print("Response :"+_result.data.toString());
     var value = _result.data
         .map((dynamic i) => PaymentModel.fromJson(i as Map<String, dynamic>))

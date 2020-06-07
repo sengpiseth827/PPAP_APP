@@ -6,6 +6,9 @@ import 'package:ppapapp/model/user_model.dart';
 import 'package:ppapapp/service/api_service.dart';
 import 'package:ppapapp/widget/detail_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'login_screen.dart';
 
 class HistoryScreen extends StatefulWidget {
   @override
@@ -14,6 +17,28 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryScreenState extends State<HistoryScreen> {
   String otherProfilePic = "https://goodstransporter.com/wp-content/uploads/2019/11/Phnom-Penh-Autonomous-Port-PPAP.jpg";
+  String userid;
+  SharedPreferences sharedPreferences;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      getUserInfo();
+    });
+  }
+  getUserInfo() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("token") == null) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => new LoginScreen()));
+    }else{
+      setState(() {
+        userid = sharedPreferences.getString("token");
+        print("user ID" +userid);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +58,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
   FutureBuilder _listFutureTasks(BuildContext context) {
     return FutureBuilder<List<HistoryModel>>(
-      future: Provider.of<ApiService>(context, listen: false).getHistory('2'),
+      future: Provider.of<ApiService>(context, listen: false).getHistory(userid),
       builder: (BuildContext context, AsyncSnapshot<List<HistoryModel>> snapshot) {
         if(snapshot.connectionState == ConnectionState.done) {
           if(snapshot.hasError) {

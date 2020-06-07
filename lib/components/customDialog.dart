@@ -207,15 +207,6 @@ class PaymentDialogState extends State<PaymentDialog>
                             builder: (BuildContext context)=>new FTBPayScreen(),
                             settings: RouteSettings(arguments: ScreenArguments(data,"FTB"))
                         ));
-//                        String url = "https://apps.apple.com/kh/app/ftb-mohabot-app/id1248167629";
-//                        if (await canLaunch(url)) {
-//                          await launch(url,
-//                              forceWebView: true
-//                          );
-//                          print(url);
-//                        } else {
-//                          print('Could not launch $url');
-//                        }
                       },
                     ),
                     SizedBox(height: 10),
