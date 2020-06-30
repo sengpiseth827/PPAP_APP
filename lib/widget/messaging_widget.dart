@@ -47,10 +47,8 @@ class _MessagingWidgetState extends State<MessagingWidget> {
         children: messages.map(buildMessage).toList(),
       );
 
-  Widget buildMessage(Message message) => Card(
-    child: ListTile(
-          title: Text(message.title),
-          subtitle: Text(message.body),
-        ),
-  );
+  Widget buildMessage(Message message) => ListTile(
+        title: Text(message.title),
+        subtitle: Text(message.body),
+      );
 }

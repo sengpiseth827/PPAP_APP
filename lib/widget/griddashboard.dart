@@ -73,7 +73,7 @@ class GridDashboard extends StatelessWidget {
   }
 
   Future _scanQR(BuildContext context) async {
-    pr = new ProgressDialog(context);
+    pr = new ProgressDialog(context,isDismissible: false);
     pr.update(
       progress: 40.0,
       message: "Loading...",

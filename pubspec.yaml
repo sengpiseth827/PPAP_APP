@@ -27,6 +27,8 @@ dependencies:
   flutter_pdfview:
   custom_progress_dialog: ^1.0.5
   firebase_messaging: ^4.0.0+1
+  flutter_webview_plugin: 0.3.0+2
+  webview_flutter: 0.2.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

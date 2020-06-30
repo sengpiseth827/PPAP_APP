@@ -6,8 +6,10 @@ import 'package:ppapapp/model/product_model.dart';
 import 'package:ppapapp/model/user_model.dart';
 import 'package:ppapapp/components/buttonLoginAnimation.dart';
 import 'package:ppapapp/components/customTextfield.dart';
+import 'package:ppapapp/screen/content_screen.dart';
 import 'package:ppapapp/service/api_service.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
 
@@ -26,6 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController etCompany = new TextEditingController();
   TextEditingController etPhonenumber = new TextEditingController();
   TextEditingController etAddress = new TextEditingController();
+  SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
@@ -115,19 +118,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         etPhonenumber.text,
                         etEmail.text,
                         etCompany.text,
-                        etAddress.text).then((it){
-                          AwesomeDialog(
-                            context: context,
-                            animType: AnimType.SCALE,
-                            dialogType: DialogType.INFO,
-                            body: Center(child: Text(
-                              'Successfully!!!',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),),
-                            tittle: 'This is Ignored',
-                            desc:   'This is also Ignored',
-                            btnOkOnPress: () async{},
-                            ).show();
+                        etAddress.text).then((it) async{
+                          it.forEach((f) async {
+                            prefs = await SharedPreferences.getInstance();
+                            await prefs.setString('username', f.tel);
+                            await prefs.setString('password', f.password);
+                            await prefs.setString('token', f.sysId);
+                            _navigateToHome(f.sysId);
+                          });
                         });
                   }else{
                     AwesomeDialog(
@@ -149,6 +147,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       ),
+    );
+  }
+  void _navigateToHome(String id){
+    Navigator.pop(context,true);// close button arrow back
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ContentScreen(),
+          settings: RouteSettings(arguments: id)),
     );
   }
 }

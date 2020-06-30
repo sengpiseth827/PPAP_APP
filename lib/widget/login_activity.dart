@@ -120,7 +120,7 @@ class _LoginActivityState extends State<LoginActivity> {
                           fontColor: Colors.white,
                           borderColor: Colors.white,
                           onTap: () async {
-                            pr = new ProgressDialog(context);
+                            pr = new ProgressDialog(context,isDismissible: false);
                             pr.update(
                               progress: 40.0,
                               message: "Please wait...",

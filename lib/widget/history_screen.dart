@@ -42,7 +42,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
           backgroundColor: Color(0xFF0000b3),
           title: Text(
@@ -87,7 +87,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         itemCount: tasks.length,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
-            padding: EdgeInsets.only(top: 8,left: 8,right: 8),
+            padding: EdgeInsets.only(top: 1,left: 8,right: 8),
             child: Card(
               child: Container(
                 padding: EdgeInsets.all(10.0),
@@ -97,7 +97,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     SizedBox(height: 10),
                     Text(
                       "Transfered to "+ tasks[index].bank,
-                      style: TextStyle(color: Colors.black54,fontSize: 20),
+                      style: TextStyle(color: Colors.blueAccent,fontSize: 20),
                     ),
                     SizedBox(height: 20),
                     Container(
@@ -126,7 +126,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           ),
                           Text(
                             tasks[index].datePay,
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.blueAccent),
                           ),
                         ],
                       ),
@@ -212,6 +212,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       ),
                     ),
                     SizedBox(height: 25),
+                    SizedBox(child: Container(height: 1,color: Colors.grey,)),
+                    SizedBox(height: 10),
                     Container(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -222,7 +224,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           ),
                           Text(
                             tasks[index].amount+"\$",
-                            style: TextStyle(color: Colors.green),
+                            style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),

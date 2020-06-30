@@ -7,6 +7,7 @@ import 'package:ppapapp/service/api_service.dart';
 import 'package:ppapapp/widget/history_screen.dart';
 import 'package:ppapapp/widget/login_screen.dart';
 import 'package:ppapapp/widget/profile_screen.dart';
+import 'package:ppapapp/widget/term_of_privacy_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -208,11 +209,27 @@ class _SettingScreenState extends State<SettingScreen> {
                           child: Container(color: Colors.black12,),
                         ),),
                         new ListTile(
+                          title: Text("Term Of Privacy",style: TextStyle(fontSize: 16,color: Colors.black),),
+                          leading: Icon(Icons.input),
+                          trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,size: 20,),
+                          onTap: (){
+                            Navigator.of(context).push(new MaterialPageRoute(
+                                builder: (BuildContext context)=>new TermOfPrivacyScreen(),
+                                settings: RouteSettings()
+                            ));
+                          },
+                        ),
+                        SizedBox(height: 0.5,child: Padding(
+                          padding: EdgeInsets.only(left: 10,right: 10),
+                          child: Container(color: Colors.black12,),
+                        ),),
+                        new ListTile(
                           title: Text("Log Out",style: TextStyle(fontSize: 16,color: Colors.black),),
                           leading: Icon(Icons.power_settings_new),
                           onTap: () async{
                             AwesomeDialog(
                               context: context,
+                              dismissOnTouchOutside: false,
                               animType: AnimType.SCALE,
                               dialogType: DialogType.INFO,
                               body: Center(child: Text(

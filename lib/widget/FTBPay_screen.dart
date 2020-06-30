@@ -12,6 +12,7 @@ import 'package:ppapapp/components/buttonLoginAnimation.dart';
 import 'package:ppapapp/components/customTextfield.dart';
 import 'package:ppapapp/screen/content_screen.dart';
 import 'package:ppapapp/service/api_service.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,9 +29,10 @@ class _FTBPayScreenState extends State<FTBPayScreen> {
   TextEditingController etAccount = new TextEditingController();
   TextEditingController etAmount = new TextEditingController();
   TextEditingController etDescription = new TextEditingController();
-  String amount,userid;
+  String amount="",userid="";
   SharedPreferences sharedPreferences;
-  String account;
+  String account="";
+  ProgressDialog pr;
 
   @override
   void initState() {
@@ -148,23 +150,37 @@ class _FTBPayScreenState extends State<FTBPayScreen> {
                     fontColor: Colors.white,
                     borderColor: Colors.white,
                     onTap: () async {
+                      pr = new ProgressDialog(context,isDismissible: false);
+                      pr.update(
+                        progress: 40.0,
+                        message: "Loading...",
+                        progressWidget: Container(
+                            padding: EdgeInsets.all(8.0), child: CircularProgressIndicator()),
+                        maxProgress: 100.0,
+                        progressTextStyle: TextStyle(
+                            color: Colors.black, fontSize: 9.0, fontWeight: FontWeight.w400),
+                        messageTextStyle: TextStyle(
+                            color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.w600),
+                      );
+                      await pr.show();
                       await Provider.of<ApiService>(context, listen: false)
                           .payment(data.data, data.message, amount, "null", account, "null",
-                          etAccount.text, etDescription.text, userid).then((it){
-                        AwesomeDialog(
-                          context: context,
-                          animType: AnimType.SCALE,
-                          dialogType: DialogType.INFO,
-                          body: Center(child: Text(
-                            'Successfully!!!',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),),
-                          tittle: 'This is Ignored',
-                          desc:   'This is also Ignored',
-                          btnOkOnPress: () async{
-                            _navigateToHome();
-                          },
-                        ).show();
+                          etAccount.text, etDescription.text, userid).then((it) async{
+                          await pr.hide();
+                          AwesomeDialog(
+                            context: context,
+                            animType: AnimType.SCALE,
+                            dialogType: DialogType.INFO,
+                            body: Center(child: Text(
+                              'Successfully!!!',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),),
+                            tittle: 'This is Ignored',
+                            desc:   'This is also Ignored',
+                            btnOkOnPress: () async{
+                              _navigateToHome();
+                            },
+                          ).show();
                       });
                     },
                   ),
