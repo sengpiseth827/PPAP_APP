@@ -227,17 +227,8 @@ class PaymentDialogState extends State<PaymentDialog>
                       onTap: () async {
                         Navigator.of(context).push(new MaterialPageRoute(
                             builder: (BuildContext context)=>new ABAPayScreen(),
-                            settings: RouteSettings(arguments: data)
+                            settings: RouteSettings(arguments: ScreenArguments(data,"ABA"))
                         ));
-//                        String url = "https://apps.apple.com/kh/app/aba-mobile-bank/id968860649";
-//                        if (await canLaunch(url)) {
-//                          await launch(url,
-//                              forceWebView: true
-//                          );
-//                          print(url);
-//                        } else {
-//                          print('Could not launch $url');
-//                        }
                       },
                     ),
                     SizedBox(height: 10),
@@ -260,15 +251,6 @@ class PaymentDialogState extends State<PaymentDialog>
                             builder: (BuildContext context)=>new WingPayScreen(),
                             settings: RouteSettings(arguments: data)
                         ));
-//                        String url = "https://apps.apple.com/kh/app/wing-money/id1113286385";
-//                        if (await canLaunch(url)) {
-//                          await launch(url,
-//                              forceWebView: true
-//                          );
-//                          print(url);
-//                        } else {
-//                          print('Could not launch $url');
-//                        }
                       },
                     ),
                     SizedBox(height: 10),

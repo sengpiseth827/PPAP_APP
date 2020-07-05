@@ -18,10 +18,10 @@ class CustomDescriptionTextField extends StatelessWidget {
       obscureText: isPassword,
       decoration: InputDecoration(
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey, width: 1.0)
+              borderSide: BorderSide(color: Colors.grey[300], width: 1.0)
           ),
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey, width: 1.0)
+              borderSide: BorderSide(color: Colors.grey[300], width: 1.0)
           ),
           labelText: label,
           labelStyle: TextStyle(color: Color(0xFFF234253),fontWeight: FontWeight.bold),
@@ -47,10 +47,10 @@ class CustomTextFieldInvoice extends StatelessWidget {
       style: TextStyle(color: Color(0xFFF234253),fontWeight: FontWeight.bold,fontSize: 12),
       decoration: InputDecoration(
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey, width: 1.0)
+              borderSide: BorderSide(color: Colors.grey[300], width: 1.0)
           ),
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey, width: 1.0)
+              borderSide: BorderSide(color: Colors.grey[300], width: 1.0)
           ),
           labelText: label,
           labelStyle: TextStyle(color: Color(0xFFF234253),fontWeight: FontWeight.bold),

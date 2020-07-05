@@ -3,6 +3,7 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ppapapp/components/customDialog.dart';
+import 'package:ppapapp/screen/content_screen.dart';
 import 'package:ppapapp/service/api_service.dart';
 import 'package:ppapapp/widget/login_screen.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,16 @@ class _PdfViewPageState extends State<PdfViewPage> {
   PDFViewController _pdfViewController;
   SharedPreferences sharedPreferences;
   bool checked = false;
+
+  Future _mockCheckForSession() async {
+    await Future.delayed(Duration(milliseconds: 3000), () {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+              builder: (BuildContext context) => ContentScreen()
+          )
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +104,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
               }else {
                 if(checked){
                   AwesomeDialog(
+                    dismissOnTouchOutside: false,
                     context: context,
                     animType: AnimType.SCALE,
                     dialogType: DialogType.INFO,

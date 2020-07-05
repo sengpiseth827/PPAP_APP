@@ -18,13 +18,13 @@ class CustomTextField extends StatelessWidget {
       obscureText: isPassword,
       decoration: InputDecoration(
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey, width: 1.0)
+              borderSide: BorderSide(color: Colors.grey[300], width: 1.0)
           ),
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey, width: 1.0)
+              borderSide: BorderSide(color: Colors.grey[300], width: 1.0)
           ),
           labelText: label,
-          labelStyle: TextStyle(color: Color(0xFFF234253),fontWeight: FontWeight.bold),
+          labelStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
           suffixIcon: icon
       ),
     );
@@ -53,7 +53,7 @@ class CustomTextFieldInvoice extends StatelessWidget {
               borderSide: BorderSide(color: Colors.grey, width: 1.0)
           ),
           labelText: label,
-          labelStyle: TextStyle(color: Color(0xFFF234253),fontWeight: FontWeight.bold),
+          labelStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
           suffixIcon: icon
       ),
       onTap: onTap,

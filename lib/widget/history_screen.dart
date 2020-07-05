@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ppapapp/model/history_model.dart';
-import 'package:ppapapp/model/service_model.dart';
-import 'package:ppapapp/model/user_model.dart';
 import 'package:ppapapp/service/api_service.dart';
-import 'package:ppapapp/widget/detail_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
