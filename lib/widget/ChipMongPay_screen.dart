@@ -1,20 +1,35 @@
+
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ppapapp/components/customDescriptionTextfield.dart';
 import 'package:ppapapp/model/ScreenArguments.dart';
+import 'package:ppapapp/model/product_model.dart';
+import 'package:ppapapp/model/user_model.dart';
+import 'package:ppapapp/components/buttonLoginAnimation.dart';
+import 'package:ppapapp/components/customTextfield.dart';
 import 'package:ppapapp/service/api_service.dart';
+import 'package:ppapapp/widget/ABACheckout_screen.dart';
+import 'package:ppapapp/widget/login_screen.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ABACheckoutScreen extends StatefulWidget {
+class ChipMongPayScreen extends StatefulWidget {
 
   @override
-  _ABACheckoutScreenState createState() => _ABACheckoutScreenState();
+  _ChipMongPayScreenState createState() => _ChipMongPayScreenState();
 }
 
-class _ABACheckoutScreenState extends State<ABACheckoutScreen> {
+class _ChipMongPayScreenState extends State<ChipMongPayScreen> {
 
-  String amount="",userid="",company="",email="",phonenumber="",username="";
+  TextEditingController etFristname = new TextEditingController();
+  TextEditingController etLastname = new TextEditingController();
+  TextEditingController etPhonenumber = new TextEditingController();
+  TextEditingController etEmail = new TextEditingController();
+  TextEditingController etDescription = new TextEditingController();
+
+  String amount="",userid="",company="";
   SharedPreferences sharedPreferences;
   String account="";
   ProgressDialog pr;
@@ -35,9 +50,10 @@ class _ABACheckoutScreenState extends State<ABACheckoutScreen> {
         it.forEach((f) async {
           if(f.sysId == userId){
             setState(() {
-              email = f.email;
-              phonenumber = f.tel;
-              username = f.userName;
+              etFristname.text = f.firstName;
+              etEmail.text = f.email;
+              etPhonenumber.text = f.tel;
+              etLastname.text = f.lastName;
             });
           }
         });
@@ -70,7 +86,7 @@ class _ABACheckoutScreenState extends State<ABACheckoutScreen> {
             style: TextStyle(
                 color: Colors.white,
             ),
-          ),
+          )
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -80,87 +96,45 @@ class _ABACheckoutScreenState extends State<ABACheckoutScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  new Text('How do you want to pay?',
+                  new Text('Enter your personal information',
                     style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,),
                   ),
+                  SizedBox(height: 15),
+                  CustomTextField(
+                    controller: etFristname,
+                    label: "First Name",
+                    isPassword: false,
+                    icon: Icon(Icons.person),
+                  ),
+                  SizedBox(height: 15),
+                  CustomTextField(
+                    controller: etLastname,
+                    label: "Last Name",
+                    isPassword: false,
+                    icon: Icon(Icons.person),
+                  ),
+                  SizedBox(height: 15),
+                  CustomDescriptionTextField(
+                    controller: etPhonenumber,
+                    label: "Phone Number",
+                    isPassword: false,
+                    icon: Icon(Icons.phone),
+                  ),
+                  SizedBox(height: 15),
+                  CustomTextField(
+                    controller: etEmail,
+                    label: "Email",
+                    isPassword: false,
+                    icon: Icon(Icons.email),
+                  ),
                   SizedBox(height: 10),
-                  new Card(
-                    color: Colors.grey[100],
-                    clipBehavior: Clip.antiAlias,
-                    child: InkWell(
-                      onTap: () {
-                        print('Card was tapped');
-                      },
-                      splashColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
-                      highlightColor: Colors.transparent,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: <Widget>[
-                            new ListTile(
-                              title: Text("ABA Mobile",style: TextStyle(fontSize: 16,color: Colors.black)),
-                              trailing: Image.asset("assets/images/pay.jpg"),
-                              subtitle: Text("Pay with QR code via ABA Mobile App on your phone"),
-                              onTap: (){
-
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                  CustomTextField(
+                    controller: etDescription,
+                    label: "Description",
+                    isPassword: false,
+                    icon: Icon(Icons.edit),
                   ),
-                  new Card(
-                    color: Colors.grey[100],
-                    clipBehavior: Clip.antiAlias,
-                    child: InkWell(
-                      onTap: () {
-                        print('Card was tapped');
-                      },
-                      splashColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
-                      highlightColor: Colors.transparent,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: <Widget>[
-                            new ListTile(
-                              title: Text("Debit/Credit Card",style: TextStyle(fontSize: 16,color: Colors.black)),
-                              trailing: Image.asset("assets/images/visa.jpg",height: 30),
-                              subtitle: Text("Pay with Visa, MasterCard and many other credit and debit cards."),
-                              onTap: (){
-
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Divider(),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 25,),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new ListTile(
-                    title: Text("Your contact detail",style: TextStyle(fontSize: 16,color: Colors.black,fontWeight: FontWeight.bold),),
-                    trailing: Icon(Icons.edit),
-                  ),
-                  new ListTile(
-                    title: Text(username,style: TextStyle(fontSize: 16,color: Colors.black),),
-                    leading: Icon(Icons.person),
-                  ),
-                  new ListTile(
-                    title: Text(email,style: TextStyle(fontSize: 16,color: Colors.black),),
-                    leading: Icon(Icons.email),
-                  ),
-                  new ListTile(
-                    title: Text(phonenumber,style: TextStyle(fontSize: 16,color: Colors.black),),
-                    leading: Icon(Icons.phone),
-                  ),
+                  SizedBox(height: 10),
                 ],
               ),
             ),
@@ -254,6 +228,18 @@ class _ABACheckoutScreenState extends State<ABACheckoutScreen> {
                       ),
                     ),
                     SizedBox(height: 20),
+                    ButtonLoginAnimation(
+                      label: "NEXT",
+                      background: Color(0xFF039be5),
+                      fontColor: Colors.white,
+                      borderColor: Colors.white,
+                      onTap: () async {
+                        Navigator.of(context).push(new MaterialPageRoute(
+                            builder: (BuildContext context)=>new ABACheckoutScreen(),
+                            settings: RouteSettings(arguments: ScreenArguments(data.data,"ABA"))
+                        ));
+                      },
+                    ),
                   ],
                 )
             ),

@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ppapapp/service/api_service.dart';
+import 'package:ppapapp/widget/login_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'buttonLoginAnimation.dart';
 import 'customTextfield.dart';
@@ -13,10 +17,16 @@ class FunkyOverlayState extends State<ChangePasswordDialog>
     with SingleTickerProviderStateMixin {
   AnimationController controller;
   Animation<double> scaleAnimation;
+  TextEditingController etoldPassword = new TextEditingController();
+  TextEditingController etnewPassword = new TextEditingController();
+  SharedPreferences sharedPreferences;
+  String sysID = "";
 
   @override
   void initState() {
     super.initState();
+
+    getUserInfo();
 
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 450));
@@ -28,6 +38,27 @@ class FunkyOverlayState extends State<ChangePasswordDialog>
     });
 
     controller.forward();
+  }
+
+  getUserInfo() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("token") == null) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => new LoginScreen()));
+    }else{
+      String userId = sharedPreferences.getString("token");
+      final api = Provider.of<ApiService>(context, listen: false);
+      api.getUser().then((it)  {
+        it.forEach((f) async {
+          if(f.sysId == userId){
+            setState(() {
+              sysID = f.sysId;
+            });
+          }
+        });
+      }).catchError((onError){
+        print(onError.toString());
+      });
+    }
   }
 
   @override
@@ -55,14 +86,14 @@ class FunkyOverlayState extends State<ChangePasswordDialog>
                         child: new Column(
                           children: <Widget>[
                             CustomTextField(
-                              controller: null,
+                              controller: etoldPassword,
                               label: "Enter Old Password",
                               isPassword: true,
                               icon: Icon(Icons.https, size: 20,color: Color(0xFFF032f41),),
                             ),
                             SizedBox(height: 10),
                             CustomTextField(
-                              controller: null,
+                              controller: etnewPassword,
                               label: "Enter New Password",
                               isPassword: true,
                               icon: Icon(Icons.https, size: 20,color: Color(0xFFF032f41),),
@@ -74,7 +105,9 @@ class FunkyOverlayState extends State<ChangePasswordDialog>
                               fontColor: Colors.white,
                               borderColor: Colors.white,
                               onTap: () async {
-//                            await Provider.of<ApiService>(context, listen: false).getUser(etEmail.text.toString(), etPassword.text.toString());
+                                  await Provider.of<ApiService>(context, listen: false).ChangePassword(etoldPassword.text,etnewPassword.text,sysID).then((it) async{
+                                    Navigator.of(context).pop();
+                                  });
                               },
                             ),
                           ],

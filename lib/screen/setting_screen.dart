@@ -178,17 +178,17 @@ class _SettingScreenState extends State<SettingScreen> {
                           padding: EdgeInsets.only(left: 10,right: 10),
                           child: Container(color: Colors.black12,),
                         ),),
-                        new ListTile(
-                          title: Text("Change Address",style: TextStyle(fontSize: 16,color: Colors.black),),
-                          leading: Icon(Icons.location_on),
-                          trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,size: 20,),
-                          onTap: (){
-                            showDialog(
-                              context: context,
-                              builder: (_) => ChangeAddressDialog(),
-                            );
-                          },
-                        ),
+//                        new ListTile(
+//                          title: Text("Change Address",style: TextStyle(fontSize: 16,color: Colors.black),),
+//                          leading: Icon(Icons.location_on),
+//                          trailing: Icon(Icons.arrow_forward_ios,color: Colors.black,size: 20,),
+//                          onTap: (){
+//                            showDialog(
+//                              context: context,
+//                              builder: (_) => ChangeAddressDialog(),
+//                            );
+//                          },
+//                        ),
                         SizedBox(height: 0.5,child: Padding(
                           padding: EdgeInsets.only(left: 10,right: 10),
                           child: Container(color: Colors.black12,),

@@ -296,4 +296,41 @@ class _ApiService implements ApiService {
         .toList();
     return Future.value(value);
   }
+
+  @override
+  ChangeProfile(String firstname, String lastname, String phone, String email, String address,String sysID) async{
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final Response<List<dynamic>> _result = await _dio.post('datamobile/updateprofile.php?FirstName='+firstname+'&LastName='+lastname+'&'
+        'Company=ppap&Phone='+phone+'&Email='+email+'&Address='+'address'+'&sys_Id='+sysID,
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    print("Response :"+_result.data.toString());
+    return Future.value(_result.data);
+  }
+
+  @override
+  ChangePassword(String oldPassword, String newPassword, String sysID) async{
+    if(oldPassword == newPassword){
+      const _extra = <String, dynamic>{};
+      final queryParameters = <String, dynamic>{};
+      final _data = <String, dynamic>{};
+      final Response<List<dynamic>> _result = await _dio.post('datamobile/changepassword.php?Password='+newPassword+'&sys_Id='+sysID,
+          queryParameters: queryParameters,
+          options: RequestOptions(
+              method: 'POST',
+              headers: <String, dynamic>{},
+              extra: _extra,
+              baseUrl: baseUrl),
+          data: _data);
+      print("Response :"+_result.data.toString());
+      return Future.value(_result.data);
+    }
+  }
 }

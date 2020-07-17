@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ppapapp/model/ScreenArguments.dart';
 import 'package:ppapapp/service/api_service.dart';
 import 'package:ppapapp/widget/ABAPay_screen.dart';
+import 'package:ppapapp/widget/ChipMongPay_screen.dart';
 import 'package:ppapapp/widget/FTBPay_screen.dart';
 import 'package:ppapapp/widget/WingPay_screen.dart';
 import 'package:provider/provider.dart';
@@ -183,7 +184,7 @@ class PaymentDialogState extends State<PaymentDialog>
               padding: const EdgeInsets.only(top: 30.0, left: 50.0, right: 50.0),
               child: Container(
                 width: 200,
-                height: 270,
+                height: 300,
                 child: Column(
                   children: <Widget>[
                     new Text("Please choose the bank",style: TextStyle(fontWeight: FontWeight.bold),),
@@ -228,6 +229,28 @@ class PaymentDialogState extends State<PaymentDialog>
                         Navigator.of(context).push(new MaterialPageRoute(
                             builder: (BuildContext context)=>new ABAPayScreen(),
                             settings: RouteSettings(arguments: ScreenArguments(data,"ABA"))
+                        ));
+                      },
+                    ),
+                    SizedBox(height: 10),
+                    CustomTextFieldPayment(
+                      controller: null,
+                      label: "CHIP MONG",
+                      icon: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/chip.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      onTap: () async {
+                        Navigator.of(context).push(new MaterialPageRoute(
+                            builder: (BuildContext context)=>new ChipMongPayScreen(),
+                            settings: RouteSettings(arguments: ScreenArguments(data,"CHIP"))
                         ));
                       },
                     ),

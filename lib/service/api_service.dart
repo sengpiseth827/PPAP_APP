@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ppapapp/model/anouncement_model.dart';
@@ -10,13 +8,10 @@ import 'package:ppapapp/model/exchange_rate_model.dart';
 import 'package:ppapapp/model/history_model.dart';
 import 'package:ppapapp/model/invoice_model.dart';
 import 'package:ppapapp/model/payment_model.dart';
-import 'package:ppapapp/model/product_model.dart';
 import 'package:ppapapp/model/service_model.dart';
 import 'package:ppapapp/model/user_model.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
 
 part 'api_service.g.dart';
 
@@ -71,5 +66,11 @@ abstract class ApiService {
   @POST("datamobile/getpayment.php")
   Future<List<PaymentModel>> payment(@Path() String payfor, @Path() String bank, @Path() String amount, @Path() String toaccountname,
       @Path() String toaccountnum, @Path() String fromaccountname, @Path() String fromaccontnum, @Path() String description, @Path() String userid );
+
+  @POST("datamobile/updateprofile.php")
+  ChangeProfile(@Path() String firstname,@Path() String lastname,@Path() String phone, @Path() String email, @Path() String address,@Path() String sysID);
+
+  @POST("datamobile/changepassword.php")
+  ChangePassword(@Path() String oldPassword,@Path() String newPassword,@Path() String sysID);
 
 }
